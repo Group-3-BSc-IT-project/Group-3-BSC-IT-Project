@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Service — Confirm Your Booking</title>
+<style>
+  :root {
+    --navy: #10172a;
+    --blue: #2f5bea;
+    --blue-light: #eef2ff;
+    --green: #22b573;
+    --text-dark: #16192b;
+    --text-muted: #9aa0b0;
+    --text-step: #8b90a0;
+    --border: #e7e9f0;
+    --bg: #f5f6fa;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+  }
+  .page {
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(16, 23, 42, 0.04);
+    padding: 32px;
+  }
+  h1 { margin: 0 0 32px 0; font-size: 26px; font-weight: 700; }
+
+  /* Stepper */
+  .stepper { display: flex; align-items: flex-start; margin-bottom: 36px; padding: 0 8px; }
+  .step { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 180px; }
+  .step-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    background: var(--white); border: 2px solid #d7dae3; color: var(--text-step); z-index: 1;
+  }
+  .step.done .step-circle { background: var(--green); border-color: var(--green); color: var(--white); }
+  .step.active .step-circle { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .step-label { font-size: 13px; color: var(--text-step); white-space: nowrap; }
+  .step.done .step-label { color: var(--text-dark); font-weight: 600; }
+  .step.active .step-label { color: var(--blue); font-weight: 600; }
+  .step-connector { flex: 1 1 auto; height: 2px; background: #e2e4ec; margin-top: 15px; margin-left: -16px; margin-right: -16px; }
+
+  .section-title { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+
+  .summary {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+  }
+
+  .summary-row {
+    display: grid;
+    grid-template-columns: 140px 1fr auto;
+    gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    align-items: baseline;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-label { color: var(--text-muted); }
+  .summary-value { color: var(--text-dark); font-weight: 600; }
+  .summary-price { color: var(--text-dark); font-weight: 700; text-align: right; }
+
+  .actions { display: flex; justify-content: space-between; margin-top: 28px; }
+  .btn {
+    padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border); font-family: inherit;
+  }
+  .btn-back { background: var(--white); color: var(--text-dark); }
+  .btn-confirm { background: var(--green); color: var(--white); border-color: var(--green); }
+
+  @media (max-width: 700px) {
+    .page { margin: 0; border-radius: 0; padding: 20px; }
+    .stepper { overflow-x: auto; }
+    .step { width: 130px; }
+    .step-label { font-size: 11px; }
+    .summary-row { grid-template-columns: 1fr; gap: 4px; }
+    .summary-price { text-align: left; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>Book a Service</h1>
+
+    <div class="stepper">
+      <div class="step done"><div class="step-circle">✓</div><div class="step-label">Select Service</div></div>
+      <div class="step-connector"></div>
+      <div class="step done"><div class="step-circle">✓</div><div class="step-label">Select Date &amp; Time</div></div>
+      <div class="step-connector"></div>
+      <div class="step done"><div class="step-circle">✓</div><div class="step-label">Your Details</div></div>
+      <div class="step-connector"></div>
+      <div class="step active"><div class="step-circle">4</div><div class="step-label">Confirm</div></div>
+    </div>
+
+    <div class="section-title">Confirm Your Booking</div>
+
+    <div class="summary">
+      <div class="summary-row">
+        <div class="summary-label">Service</div>
+        <div class="summary-value">Oil Change &amp; Filter</div>
+        <div class="summary-price">R499</div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Date &amp; Time</div>
+        <div class="summary-value">20 May 2024 • 10:00 AM</div>
+        <div></div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Vehicle</div>
+        <div class="summary-value">Toyota Corolla (ABC123GP)</div>
+        <div></div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Customer</div>
+        <div class="summary-value">John Doe • 083 123 4567</div>
+        <div></div>
+      </div>
+      <div class="summary-row">
+        <div class="summary-label">Notes</div>
+        <div class="summary-value">No special notes</div>
+        <div></div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-back"><a href="step3-your-details.html">Back</a></button>
+      <button class="btn btn-confirm">Confirm Booking</button>
+    </div>
+  </div>
+</body>
+</html>

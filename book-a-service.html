@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Service — MSBMS</title>
+<style>
+  :root {
+    --navy: #10172a;
+    --blue: #2f5bea;
+    --blue-light: #eef2ff;
+    --text-dark: #16192b;
+    --text-muted: #9aa0b0;
+    --text-step: #8b90a0;
+    --border: #e7e9f0;
+    --bg: #f5f6fa;
+    --card-bg: #fafbfc;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+  }
+
+  .page {
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(16, 23, 42, 0.04);
+    padding: 32px;
+  }
+
+  h1 {
+    margin: 0 0 32px 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-dark);
+  }
+
+  /* Stepper */
+  .stepper {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 36px;
+    padding: 0 8px;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    flex: 0 0 auto;
+    width: 180px;
+  }
+
+  .step-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--white);
+    border: 2px solid #d7dae3;
+    color: var(--text-step);
+    z-index: 1;
+  }
+
+  .step.active .step-circle {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: var(--white);
+  }
+
+  .step-label {
+    font-size: 13px;
+    color: var(--text-step);
+    white-space: nowrap;
+  }
+
+  .step.active .step-label {
+    color: var(--blue);
+    font-weight: 600;
+  }
+
+  .step-connector {
+    flex: 1 1 auto;
+    height: 2px;
+    background: #e2e4ec;
+    margin-top: 15px;
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+
+  /* Service selection */
+  .section-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+  }
+
+  .service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+
+  .service-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .service-card:hover {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .service-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin: 0 0 4px 0;
+  }
+
+  .service-price {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  @media (max-width: 700px) {
+    .page { margin: 0; border-radius: 0; padding: 20px; }
+    .service-grid { grid-template-columns: 1fr; }
+    .stepper { overflow-x: auto; }
+    .step { width: 130px; }
+    .step-label { font-size: 11px; }
+  }
+.navigation-buttons {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  right: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.btn {
+  min-width: 92px;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease;
+}
+
+/* Unhighlighted Back button */
+.btn-back {
+  color: #17233d;
+  background-color: #ffffff;
+  border: 1px solid #d9dee8;
+  text-decoration: none;
+}
+
+.btn-back:hover {
+  background-color: #f5f7fa;
+  border-color: #c4cad6;
+}
+
+.btn-back:focus-visible,
+.btn-next:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 2px;
+}
+
+/* Highlighted Next button */
+.btn-next {
+  color: #ffffff;
+  background-color: #2563eb;
+  border: 1px solid #2563eb;
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
+  text-decoration: none;
+}
+
+.btn-next:hover {
+  background-color: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.btn-next:active {
+  background-color: #1e40af;
+  border-color: #1e40af;
+}
+
+@media (max-width: 600px) {
+  .navigation-buttons {
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
+  }
+
+  .btn {
+    min-width: 80px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+}
+
+</style>
+</head>
+<body>
+
+  <div class="page">
+    <h1>Book a Service</h1>
+
+    <div class="stepper">
+      <div class="step active">
+        <div class="step-circle">1</div>
+        <div class="step-label">Select Service</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-label">Select Date &amp; Time</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-label">Your Details</div>
+      </div>
+      <div class="step-connector"></div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-label">Confirm</div>
+      </div>
+    </div>
+
+    <div class="section-title">Select a Service</div>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div>
+          <p class="service-name">Oil Change &amp; Filter</p>
+          <p class="service-price">From R499</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div>
+          <p class="service-name">Brake Inspection</p>
+          <p class="service-price">From R399</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div>
+          <p class="service-name">Full Service</p>
+          <p class="service-price">From R1299</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div>
+          <p class="service-name">Engine Diagnostics</p>
+          <p class="service-price">From R599</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div>
+          <p class="service-name">Tyre Replacement</p>
+          <p class="service-price">From R450</p>
+        </div>
+      </div>
+      <div class="service-card">
+        <div>
+          <p class="service-name">Battery Check</p>
+          <p class="service-price">From R199</p>
+        </div>
+      </div>
+      <div class="navigation-buttons">
+        <a type="button" class="btn btn-back" href="my-bookings.html">
+          Back
+        </a>
+
+        <a type="button" class="btn btn-next" href="step2-date-time.html">
+          Next
+        </a>
+      </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

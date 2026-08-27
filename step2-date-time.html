@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Book a Service — Select Date &amp; Time</title>
+<style>
+  :root {
+    --navy: #10172a;
+    --blue: #2f5bea;
+    --blue-light: #eef2ff;
+    --green: #22b573;
+    --text-dark: #16192b;
+    --text-muted: #9aa0b0;
+    --text-step: #8b90a0;
+    --border: #e7e9f0;
+    --bg: #f5f6fa;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+  }
+  .page {
+    max-width: 960px;
+    margin: 40px auto;
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(16, 23, 42, 0.04);
+    padding: 32px;
+  }
+  h1 { margin: 0 0 32px 0; font-size: 26px; font-weight: 700; }
+
+  /* Stepper */
+  .stepper { display: flex; align-items: flex-start; margin-bottom: 36px; padding: 0 8px; }
+  .step { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 180px; }
+  .step-circle {
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700;
+    background: var(--white); border: 2px solid #d7dae3; color: var(--text-step); z-index: 1;
+  }
+  .step.done .step-circle { background: var(--green); border-color: var(--green); color: var(--white); }
+  .step.active .step-circle { background: var(--blue); border-color: var(--blue); color: var(--white); }
+  .step-label { font-size: 13px; color: var(--text-step); white-space: nowrap; }
+  .step.done .step-label, .step.active .step-label { color: var(--text-dark); font-weight: 600; }
+  .step.active .step-label { color: var(--blue); }
+  .step-connector { flex: 1 1 auto; height: 2px; background: #e2e4ec; margin-top: 15px; margin-left: -16px; margin-right: -16px; }
+
+  .content { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+  .section-title { font-size: 15px; font-weight: 700; margin-bottom: 14px; }
+
+  /* Calendar */
+  .calendar {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .cal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: 14px; font-weight: 600; margin-bottom: 12px;
+  }
+  .cal-nav {
+    background: none; border: none; cursor: pointer;
+    color: var(--text-muted); font-size: 14px; padding: 4px 8px;
+  }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; }
+  .cal-dow { font-size: 12px; color: var(--text-muted); padding: 6px 0; font-weight: 600; }
+  .cal-day {
+    font-size: 13px; padding: 8px 0; border-radius: 6px; cursor: pointer; color: var(--text-dark);
+  }
+  .cal-day.muted { color: #c9cbd6; }
+  .cal-day:hover:not(.muted) { background: var(--blue-light); }
+  .cal-day.selected { background: var(--blue); color: var(--white); font-weight: 700; }
+
+  /* Times */
+  .times-label { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; }
+  .times-label strong { color: var(--text-dark); }
+  .time-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .time-btn {
+    padding: 12px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--white); font-size: 14px; color: var(--text-dark);
+    cursor: pointer; text-align: center; font-family: inherit;
+  }
+  .time-btn:hover { border-color: var(--blue); }
+  .time-btn.selected { background: var(--blue); border-color: var(--blue); color: var(--white); font-weight: 600; }
+
+  .actions { display: flex; justify-content: space-between; margin-top: 28px; }
+  .btn {
+    padding: 10px 22px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border); font-family: inherit;
+  }
+  .btn-back { 
+    background: var(--white); 
+    color: var(--text-dark);
+    text-decoration: none; 
+  }
+  .btn-next { background: var(--blue); color: var(--white); border-color: var(--blue); grid-column: 2; justify-self: end; }
+
+  @media (max-width: 700px) {
+    .page { margin: 0; border-radius: 0; padding: 20px; }
+    .content { grid-template-columns: 1fr; }
+    .stepper { overflow-x: auto; }
+    .step { width: 130px; }
+    .step-label { font-size: 11px; }
+  }
+
+  .booking-controls {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.booking-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #17233d;
+  font-weight: 600;
+}
+
+.booking-controls input {
+  padding: 10px 12px;
+  border: 1px solid #d9dee8;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.spaces-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.space-card {
+  padding: 16px;
+  text-align: left;
+  color: #17233d;
+  background: #ffffff;
+  border: 1px solid #d9dee8;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.space-card:hover,
+.space-card.selected {
+  background: #f1f5ff;
+  border-color: #2563eb;
+}
+
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>Book a Service</h1>
+
+<div class="booking-controls">
+  <label>
+    Date
+    <input type="date" id="booking-date">
+  </label>
+
+  <label>
+    Start time
+    <input type="time" id="start-time" value="09:00">
+  </label>
+
+  <label>
+    End time
+    <input type="time" id="end-time" value="10:00">
+  </label>
+</div>
+
+<p id="availability-status"></p>
+<div id="available-spaces" class="spaces-grid"></div>
+
+<script>
+  const dateInput = document.querySelector('#booking-date');
+  const startInput = document.querySelector('#start-time');
+  const endInput = document.querySelector('#end-time');
+  const statusText = document.querySelector('#availability-status');
+  const spacesContainer = document.querySelector('#available-spaces');
+
+  async function loadAvailability() {
+    if (!dateInput.value || !startInput.value || !endInput.value) return;
+
+    const start = `${dateInput.value}T${startInput.value}:00`;
+    const end = `${dateInput.value}T${endInput.value}:00`;
+
+    statusText.textContent = 'Loading available spaces...';
+    spacesContainer.innerHTML = '';
+
+    try {
+      const response = await fetch(
+        `/api/availability?start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`
+      );
+
+      if (!response.ok) throw new Error('Request failed');
+
+      const data = await response.json();
+
+      if (data.spaces.length === 0) {
+        statusText.textContent = 'No spaces are available for this time.';
+        return;
+      }
+
+      statusText.textContent = `${data.spaces.length} space(s) available`;
+
+      data.spaces.forEach(space => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'space-card';
+        button.textContent = `${space.name} — Capacity ${space.capacity}`;
+        button.addEventListener('click', () => selectSpace(space.id));
+        spacesContainer.appendChild(button);
+      });
+    } catch (error) {
+      statusText.textContent = 'Could not load availability. Please try again.';
+    }
+  }
+
+  function selectSpace(spaceId) {
+    console.log('Selected space:', spaceId);
+    // Store the selected space and enable your Next button.
+  }
+
+  dateInput.addEventListener('change', loadAvailability);
+  startInput.addEventListener('change', loadAvailability);
+  endInput.addEventListener('change', loadAvailability);
+
+  // Optional: show cancellations or newly released spaces without a manual refresh.
+  setInterval(loadAvailability, 30000);
+
+
+
+
+
+
+  app.get('/api/availability', async (req, res) => {
+  try {
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+      return res.status(400).json({
+        error: 'start and end are required'
+      });
+    }
+
+    const spaces = await db.query(`
+      SELECT s.id, s.name, s.capacity
+      FROM spaces s
+      WHERE s.active = TRUE
+        AND NOT EXISTS (
+          SELECT 1
+          FROM bookings b
+          WHERE b.space_id = s.id
+            AND b.status IN ('held', 'confirmed')
+            AND (
+              b.status <> 'held'
+              OR b.hold_expires_at > CURRENT_TIMESTAMP
+            )
+            AND b.starts_at < $1
+            AND b.ends_at > $2
+        )
+      ORDER BY s.name
+    `, [end, start]);
+
+    res.json({
+      start,
+      end,
+      spaces: spaces.rows
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Unable to load availability' });
+  }
+});
+
+</script>
+
+
+    <div class="actions">
+      <button class="btn btn-back"><a href="book-a-service.html">Back</a></button>
+      <button class="btn btn-next"><a href="step3-your-details.html">Next</a></button>
+    </div>
+  </div>
+</body>
+</html>

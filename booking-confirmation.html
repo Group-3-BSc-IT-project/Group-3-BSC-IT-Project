@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Booking Confirmed — MSBMS</title>
+<style>
+  :root {
+    --navy: #10172a;
+    --blue: #2f5bea;
+    --blue-light: #eef2ff;
+    --green: #22b573;
+    --green-light: #e6f8ef;
+    --text-dark: #16192b;
+    --text-muted: #9aa0b0;
+    --border: #e7e9f0;
+    --bg: #f5f6fa;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-dark);
+  }
+  .page {
+    max-width: 720px;
+    margin: 60px auto;
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px rgba(16, 23, 42, 0.04);
+    padding: 48px 40px;
+    text-align: center;
+  }
+
+  .check-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    margin: 0 auto 24px auto;
+  }
+
+  h1 { margin: 0 0 8px 0; font-size: 24px; font-weight: 700; }
+  .subtitle { margin: 0 0 32px 0; font-size: 14px; color: var(--text-muted); }
+
+  .summary {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    text-align: left;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 16px;
+  }
+
+  .summary-label { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+  .summary-value { font-size: 14px; font-weight: 700; color: var(--text-dark); }
+
+  .actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 32px;
+  }
+  .btn {
+    padding: 11px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    cursor: pointer; border: 1px solid var(--border); font-family: inherit;
+  }
+  .btn-primary { background: var(--blue); color: var(--white); border-color: var(--blue); }
+  .btn-secondary { background: var(--white); color: var(--text-dark); }
+
+  @media (max-width: 600px) {
+    .page { margin: 0; border-radius: 0; padding: 32px 20px; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .actions { flex-direction: column; }
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="check-circle">✓</div>
+    <h1>Booking Confirmed!</h1>
+    <p class="subtitle">Your booking has been successfully created.</p>
+
+    <div class="summary">
+      <div class="summary-grid">
+        <div>
+          <div class="summary-label">Service</div>
+          <div class="summary-value">Oil Change &amp; Filter</div>
+        </div>
+        <div>
+          <div class="summary-label">Date &amp; Time</div>
+          <div class="summary-value">20 May 2024 • 10:00 AM</div>
+        </div>
+        <div>
+          <div class="summary-label">Vehicle</div>
+          <div class="summary-value">Toyota Corolla (ABC123GP)</div>
+        </div>
+        <div>
+          <div class="summary-label">Booking Reference</div>
+          <div class="summary-value">MSBMS240520-1000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-primary">Go to My Bookings</button>
+      <button class="btn btn-secondary">Back to Home</button>
+    </div>
+  </div>
+</body>
+</html>
