@@ -5,311 +5,401 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Book a Service — MSBMS</title>
 <style>
-  :root {
-    --navy: #10172a;
-    --blue: #2f5bea;
-    --blue-light: #eef2ff;
-    --text-dark: #16192b;
-    --text-muted: #9aa0b0;
-    --text-step: #8b90a0;
-    --border: #e7e9f0;
-    --bg: #f5f6fa;
-    --card-bg: #fafbfc;
-    --white: #ffffff;
-  }
+* {
+  box-sizing: border-box;
+}
 
-  * { box-sizing: border-box; }
+:root {
+  --navy: #17233d;
+  --muted: #8f929a;
+  --blue: #2563eb;
+  --blue-light: #f1f5ff;
+  --border: #e0e2e7;
+  --background: #f5f6fa;
+}
 
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-    background: var(--bg);
-    color: var(--text-dark);
-  }
+body {
+  min-height: 100vh;
+  margin: 0;
+  padding: 24px;
+  color: var(--navy);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
 
-  .page {
-    max-width: 960px;
-    margin: 40px auto;
-    background: var(--white);
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    box-shadow: 0 1px 3px rgba(16, 23, 42, 0.04);
-    padding: 32px;
-  }
+.booking-card {
+  width: min(1200px, 100%);
+  min-height: 540px;
+  margin: 0 auto;
+  padding: 44px 40px 40px;
+  background: #ffffff;
+  border: 1px solid #e6e7eb;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(23, 35, 61, 0.04);
+}
 
-  h1 {
-    margin: 0 0 32px 0;
-    font-size: 26px;
-    font-weight: 700;
-    color: var(--text-dark);
-  }
+h1 {
+  margin: 0 0 42px;
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
 
-  /* Stepper */
-  .stepper {
-    display: flex;
-    align-items: flex-start;
-    margin-bottom: 36px;
-    padding: 0 8px;
-  }
+.progress-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  margin: 0 0 50px;
+  padding: 0;
+  list-style: none;
+}
 
-  .step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    position: relative;
-    flex: 0 0 auto;
-    width: 180px;
-  }
+.step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 16px;
+  text-align: center;
+}
 
-  .step-circle {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 13px;
-    font-weight: 700;
-    background: var(--white);
-    border: 2px solid #d7dae3;
-    color: var(--text-step);
-    z-index: 1;
-  }
+.step:not(:last-child)::after {
+  position: absolute;
+  top: 20px;
+  left: calc(50% + 42px);
+  width: calc(100% - 84px);
+  height: 2px;
+  background: #e1e2e5;
+  content: "";
+}
 
-  .step.active .step-circle {
-    background: var(--blue);
-    border-color: var(--blue);
-    color: var(--white);
-  }
+.step-number {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  color: var(--muted);
+  background: #ffffff;
+  border: 2px solid #d9dadd;
+  border-radius: 50%;
+  font-size: 16px;
+}
 
-  .step-label {
-    font-size: 13px;
-    color: var(--text-step);
-    white-space: nowrap;
-  }
+.step.active {
+  color: var(--blue);
+}
 
-  .step.active .step-label {
-    color: var(--blue);
-    font-weight: 600;
-  }
+.step.active .step-number {
+  color: #ffffff;
+  background: var(--blue);
+  border-color: var(--blue);
+}
 
-  .step-connector {
-    flex: 1 1 auto;
-    height: 2px;
-    background: #e2e4ec;
-    margin-top: 15px;
-    margin-left: -16px;
-    margin-right: -16px;
-  }
+fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
 
-  /* Service selection */
-  .section-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text-dark);
-    margin-bottom: 16px;
-  }
+legend {
+  margin-bottom: 20px;
+  padding: 0;
+  color: var(--navy);
+  font-size: 20px;
+  font-weight: 700;
+}
 
-  .service-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
 
-  .service-card {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    padding: 18px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: var(--card-bg);
-    cursor: pointer;
-    transition: border-color 0.15s ease, background 0.15s ease;
-  }
+.service-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 96px;
+  padding: 20px 24px;
+  color: var(--navy);
+  background: #ffffff;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 0 rgba(23, 35, 61, 0.03);
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease, transform 0.15s ease;
+}
 
-  .service-card:hover {
-    border-color: var(--blue);
-    background: var(--blue-light);
-  }
+.service-card:hover {
+  border-color: #8fa8df;
+  background: #f8faff;
+  box-shadow: 0 4px 10px rgba(23, 35, 61, 0.08);
+  transform: translateY(-1px);
+}
 
-  .service-name {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--text-dark);
-    margin: 0 0 4px 0;
-  }
+.service-card:has(input:checked) {
+  color: #ffffff;
+  background: var(--blue);
+  border-color: var(--blue);
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
 
-  .service-price {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin: 0;
-  }
+.service-card input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
 
-  @media (max-width: 700px) {
-    .page { margin: 0; border-radius: 0; padding: 20px; }
-    .service-grid { grid-template-columns: 1fr; }
-    .stepper { overflow-x: auto; }
-    .step { width: 130px; }
-    .step-label { font-size: 11px; }
-  }
+.radio-control {
+  display: none;
+}
+
+.service-card input:checked ~ .service-content strong,
+.service-card input:checked ~ .service-content small {
+  color: #ffffff;
+}
+
+.service-card:has(input:focus-visible) {
+  outline: 3px solid rgba(37, 99, 235, 0.35);
+  outline-offset: 3px;
+}
+
+.service-content {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.service-content strong {
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.service-content small {
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.service-card:active {
+  transform: translateY(0);
+}
+
 .navigation-buttons {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  right: 24px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  z-index: 10;
+  margin-top: 40px;
 }
 
 .btn {
   min-width: 92px;
   padding: 12px 22px;
   border-radius: 8px;
-  font-family: Arial, sans-serif;
+  font: inherit;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease,
-              border-color 0.2s ease,
-              box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
-/* Unhighlighted Back button */
 .btn-back {
-  color: #17233d;
-  background-color: #ffffff;
+  color: var(--navy);
+  background: #ffffff;
   border: 1px solid #d9dee8;
-  text-decoration: none;
 }
 
 .btn-back:hover {
-  background-color: #f5f7fa;
+  background: #f5f7fa;
   border-color: #c4cad6;
 }
 
-.btn-back:focus-visible,
-.btn-next:focus-visible {
+.btn-next {
+  color: #ffffff;
+  background: var(--blue);
+  border: 1px solid var(--blue);
+  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
+}
+
+.btn-next:hover {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+}
+
+.btn:focus-visible {
   outline: 3px solid rgba(37, 99, 235, 0.35);
   outline-offset: 2px;
 }
 
-/* Highlighted Next button */
-.btn-next {
-  color: #ffffff;
-  background-color: #2563eb;
-  border: 1px solid #2563eb;
-  box-shadow: 0 2px 5px rgba(37, 99, 235, 0.2);
-  text-decoration: none;
-}
-
-.btn-next:hover {
-  background-color: #1d4ed8;
-  border-color: #1d4ed8;
-}
-
-.btn-next:active {
-  background-color: #1e40af;
-  border-color: #1e40af;
-}
-
-@media (max-width: 600px) {
-  .navigation-buttons {
-    bottom: 16px;
-    left: 16px;
-    right: 16px;
+@media (max-width: 800px) {
+  .booking-card {
+    padding: 32px 24px;
   }
 
-  .btn {
-    min-width: 80px;
-    padding: 10px 16px;
+  .service-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  body {
+    padding: 12px;
+  }
+
+  .booking-card {
+    padding: 28px 18px;
+  }
+
+  h1 {
+    margin-bottom: 32px;
+    font-size: 28px;
+  }
+
+  .progress-steps {
+    margin-bottom: 36px;
+  }
+
+  .step {
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .step-number {
+    width: 34px;
+    height: 34px;
     font-size: 14px;
   }
+
+  .step:not(:last-child)::after {
+    top: 16px;
+    left: calc(50% + 30px);
+    width: calc(100% - 60px);
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .navigation-buttons {
+    margin-top: 28px;
+  }
 }
+
 
 </style>
 </head>
 <body>
 
-  <div class="page">
+   <main class="booking-card">
     <h1>Book a Service</h1>
 
-    <div class="stepper">
-      <div class="step active">
-        <div class="step-circle">1</div>
-        <div class="step-label">Select Service</div>
-      </div>
-      <div class="step-connector"></div>
-      <div class="step">
-        <div class="step-circle">2</div>
-        <div class="step-label">Select Date &amp; Time</div>
-      </div>
-      <div class="step-connector"></div>
-      <div class="step">
-        <div class="step-circle">3</div>
-        <div class="step-label">Your Details</div>
-      </div>
-      <div class="step-connector"></div>
-      <div class="step">
-        <div class="step-circle">4</div>
-        <div class="step-label">Confirm</div>
-      </div>
-    </div>
+    <ol class="progress-steps" aria-label="Booking progress">
+      <li class="step active">
+        <span class="step-number">1</span>
+        <span>Select Service</span>
+      </li>
+      <li class="step">
+        <span class="step-number">2</span>
+        <span>Select Date &amp; Time</span>
+      </li>
+      <li class="step">
+        <span class="step-number">3</span>
+        <span>Your Details</span>
+      </li>
+      <li class="step">
+        <span class="step-number">4</span>
+        <span>Confirm</span>
+      </li>
+    </ol>
 
-    <div class="section-title">Select a Service</div>
+    <form id="service-form">
+      <fieldset>
+        <legend>Select a Service</legend>
 
-    <div class="service-grid">
-      <div class="service-card">
-        <div>
-          <p class="service-name">Oil Change &amp; Filter</p>
-          <p class="service-price">From R499</p>
+        <div class="service-grid">
+          <label class="service-card">
+            <input type="radio" name="service" value="oil-change" checked />
+            <span class="radio-control" aria-hidden="true"></span>
+            <span class="service-content">
+              <strong>Oil Change &amp; Filter</strong>
+              <small>From R499</small>
+            </span>
+          </label>
+
+          <label class="service-card">
+            <input type="radio" name="service" value="brake-inspection" />
+            <span class="radio-control" aria-hidden="true"></span>
+            <span class="service-content">
+              <strong>Brake Inspection</strong>
+              <small>From R399</small>
+            </span>
+          </label>
+
+          <label class="service-card">
+            <input type="radio" name="service" value="full-service" />
+            <span class="radio-control" aria-hidden="true"></span>
+            <span class="service-content">
+              <strong>Full Service</strong>
+              <small>From R1299</small>
+            </span>
+          </label>
+
+          <label class="service-card">
+            <input type="radio" name="service" value="engine-diagnostics" />
+            <span class="radio-control" aria-hidden="true"></span>
+            <span class="service-content">
+              <strong>Engine Diagnostics</strong>
+              <small>From R599</small>
+            </span>
+          </label>
+
+          <label class="service-card">
+            <input type="radio" name="service" value="tyre-replacement" />
+            <span class="radio-control" aria-hidden="true"></span>
+            <span class="service-content">
+              <strong>Tyre Replacement</strong>
+              <small>From R450</small>
+            </span>
+          </label>
+
+          <label class="service-card">
+            <input type="radio" name="service" value="battery-check" />
+            <span class="radio-control" aria-hidden="true"></span>
+            <span class="service-content">
+              <strong>Battery Check</strong>
+              <small>From R199</small>
+            </span>
+          </label>
         </div>
-      </div>
-      <div class="service-card">
-        <div>
-          <p class="service-name">Brake Inspection</p>
-          <p class="service-price">From R399</p>
-        </div>
-      </div>
-      <div class="service-card">
-        <div>
-          <p class="service-name">Full Service</p>
-          <p class="service-price">From R1299</p>
-        </div>
-      </div>
-      <div class="service-card">
-        <div>
-          <p class="service-name">Engine Diagnostics</p>
-          <p class="service-price">From R599</p>
-        </div>
-      </div>
-      <div class="service-card">
-        <div>
-          <p class="service-name">Tyre Replacement</p>
-          <p class="service-price">From R450</p>
-        </div>
-      </div>
-      <div class="service-card">
-        <div>
-          <p class="service-name">Battery Check</p>
-          <p class="service-price">From R199</p>
-        </div>
-      </div>
+      </fieldset>
+
       <div class="navigation-buttons">
-        <a type="button" class="btn btn-back" href="my-bookings.html">
-          Back
-        </a>
-
-        <a type="button" class="btn btn-next" href="step2-date-time.html">
-          Next
-        </a>
+        <button type="button" class="btn btn-back">
+          <a href="my-bookings.html">Back</a>
+        </button>
+        <button type="submit" class="btn btn-next">
+          <a href="step2-date-time.html">Next</a>
+        </button>
       </div>
-      </div>
-    </div>
-  </div>
+    </form>
+  </main>
 
+  <script>
+    document.querySelector('#service-form').addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const selectedService = document.querySelector('input[name="service"]:checked');
+      console.log('Selected service:', selectedService.value);
+    });
+  </script>
 </body>
 </html>
