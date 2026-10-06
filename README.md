@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 ## accounts
 - Admin: `admin@msbms.com`
@@ -18,3 +19,6 @@ View -> Controller -> Service -> Repository -> MySQL
 - `app/Models/`: domain objects
 - `app/Core/`: database, session, auth and validation infrastructure
 - `database/`: MySQL schema and seed data
+=======
+# Group-3-BSC-IT-Project
+>>>>>>> cc50db6a1f790787613b053162737a84779a7ed8
