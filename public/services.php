@@ -76,8 +76,11 @@ $services = $serviceController->all();
                 </table>
             </div>
         </div>
+        <p style="margin-top:20px">
+            <a class="btn secondary" href="<?= e($dashboardLink) ?>">Back to Dash</a>
+        </p>
     </main>
-
+                       
 </div>
 </body>
 </html>
