@@ -58,8 +58,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="card form">
-            <p class="footer-note" style="margin-top:0;margin-bottom:20px;font-size:13px;color:var(--text)">
-                Booking #<?= e($id) ?> &middot; <?= e($booking['registration_number']) ?> &middot; <?= e($booking['service_name']) ?>
+            <p style="margin-bottom:16px">
+                 Booking #<?= e($id) ?><br>
+                 Customer: <?= e($booking['customer_name']) ?><br>
+                 Service: <?= e($booking['service_name']) ?>
             </p>
 
             <?php if ($message): ?>

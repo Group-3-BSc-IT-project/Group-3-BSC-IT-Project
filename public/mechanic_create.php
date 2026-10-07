@@ -24,13 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="card auth-card wide form">
         <div class="auth-logo"><span class="logo-mark">✦</span>MSBMS</div>
 
-        <?php if (Session::userId()): ?>
-            <p class="session-strip">
-                Logged in as <?= e(Session::fullName()) ?> (<?= e(Session::role()) ?>)
-                &middot; <a href="index.php">Dashboard</a>
-                &middot; <a href="logout.php">Logout</a>
-            </p>
-        <?php endif; ?>
+        
 
         <h1>Create Mechanic</h1>
         <p class="sub">Add a new mechanic account</p>

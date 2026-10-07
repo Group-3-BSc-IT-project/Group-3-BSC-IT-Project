@@ -22,36 +22,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Reschedule Booking - MSBMS</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>Reschedule Booking | MSBMS</title>
+    <link rel="stylesheet" href="assets/styled.css">
 </head>
 <body>
+<div class="app">
 
-<nav>
-    <a href="index.php">MSBMS</a>
-    <?php if (Session::userId()): ?>
-        <span> | <?= e(Session::fullName()) ?> (<?= e(Session::role()) ?>)</span>
-        <a href="logout.php">Logout</a>
-    <?php endif; ?>
-</nav>
+    <aside class="sidebar">
+        <div class="logo"><span class="logo-mark">✦</span> MSBMS</div>
+        <nav class="nav">
+            <a href="customer.php"><span class="icon">🏠</span>Dashboard</a>
+            <a href="booking_create.php"><span class="icon">📅</span>My Bookings</a>
+            <a href="vehicles.php"><span class="icon">🚗</span>My Vehicles</a>
+            <a href="history.php"><span class="icon">🔧</span>Service History</a>
+            <a href="notifications.php"><span class="icon">🔔</span>Notifications</a>
+            <a href="profile.php"><span class="icon">👤</span>Profile</a>
+            <?php if (Session::userId()): ?>
+                <a href="logout.php"><span class="icon">↪</span>Logout</a>
+            <?php endif; ?>
+        </nav>
+    </aside>
 
-<main>
-    <h1>Reschedule Booking #<?= e($id) ?></h1>
+    <main class="main">
+        <div class="topbar">
+            <div class="title">
+                <h1>Reschedule Booking #<?= e($id) ?></h1>
+                <p>Motor Service Booking Management System</p>
+            </div>
+            <?php if (Session::userId()): ?>
+                <div class="user">
+                    <span><?= e(Session::fullName()) ?> (<?= e(Session::role()) ?>)</span>
+                    <span class="avatar"><?= e(strtoupper(substr((string) Session::fullName(), 0, 1))) ?></span>
+                </div>
+            <?php endif; ?>
+        </div>
 
-    <?php if ($message): ?>
-        <p class="error"><?= e($message) ?></p>
-    <?php endif; ?>
+        <div class="card form">
+            <?php if ($message): ?>
+                <p style="color:var(--red);font-size:12px;margin-bottom:16px"><?= e($message) ?></p>
+            <?php endif; ?>
 
-    <form method="post">
-        <input type="date" name="booking_date" value="<?= e($booking['booking_date']) ?>" required>
-        <input type="time" name="booking_time" value="<?= e(substr($booking['booking_time'], 0, 5)) ?>" required>
-        <button>Reschedule</button>
-    </form>
-</main>
+            <form method="post">
+                <div class="form-row">
+                    <div class="field">
+                        <label for="booking_date">New Date</label>
+                        <input type="date" id="booking_date" name="booking_date"
+                               value="<?= e($booking['booking_date']) ?>" required>
+                    </div>
+                    <div class="field">
+                        <label for="booking_time">New Time</label>
+                        <input type="time" id="booking_time" name="booking_time"
+                               value="<?= e(substr($booking['booking_time'], 0, 5)) ?>" required>
+                    </div>
+                </div>
 
+                <button class="btn" type="submit">Reschedule</button>
+                <a class="btn secondary" href="customer.php">Cancel</a>
+            </form>
+        </div>
+    </main>
+
+</div>
 </body>
 </html>
