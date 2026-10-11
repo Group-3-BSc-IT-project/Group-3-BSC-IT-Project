@@ -499,3 +499,1250 @@ button,input,select{font-family:inherit}
   .auth-shell{padding:20px 14px}
   .auth-card{max-width:100%}
 }
+
+
+/* =====================================================
+   LANDING PAGE (public/index.php)
+   Add class="landing" to the <body> tag of the landing page.
+   Every rule below is scoped under .landing so it cannot
+   clash with the dashboard / auth styles above.
+====================================================== */
+
+body.landing{font-size:16px}
+
+/* Neutralise the dashboard .btn and .logo defaults on the landing page */
+.landing .btn{background:none;box-shadow:none;border:0;color:inherit;cursor:pointer}
+.landing .btn:hover{box-shadow:none;transform:none}
+.landing .logo{height:auto;padding:0;margin-bottom:0;letter-spacing:normal}
+
+/* =====================================================
+           GENERAL SETTINGS
+        ====================================================== */
+
+        
+
+        
+
+        body.landing{
+            font-family: "Inter", Arial, sans-serif;
+            color: #172033;
+            background: #ffffff;
+            line-height: 1.6;
+        }
+
+        .landing a{
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .landing img{
+            max-width: 100%;
+            display: block;
+        }
+
+        .landing .container{
+            width: 92%;
+            max-width: 1180px;
+            margin: auto;
+        }
+
+
+        /* =====================================================
+           BUTTONS
+        ====================================================== */
+
+        .landing .btn{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+
+            padding: 12px 22px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.25s ease;
+        }
+
+        .landing .btn-primary{
+            background: #1559c7;
+            color: white;
+        }
+
+        .landing .btn-primary:hover{
+            background: #0e46a2;
+            transform: translateY(-2px);
+        }
+
+        .landing .btn-secondary{
+            background: white;
+            color: #172033;
+            border: 1px solid #d9dee8;
+        }
+
+        .landing .btn-secondary:hover{
+            background: #f4f6f9;
+        }
+
+        .landing .btn-login{
+            padding: 9px 17px;
+            border: 1px solid #d7dce5;
+            color: #172033;
+        }
+
+        .landing .btn-login:hover{
+            background: #f4f6f9;
+        }
+
+        .landing .btn-signup{
+            padding: 10px 18px;
+            background: #1559c7;
+            color: white;
+        }
+
+        .landing .btn-signup:hover{
+            background: #0e46a2;
+        }
+
+        .landing .btn-white{
+            background: white;
+            color: #1559c7;
+        }
+
+        .landing .btn-white:hover{
+            background: #f1f4f9;
+        }
+
+
+        /* =====================================================
+           NAVIGATION BAR
+        ====================================================== */
+
+        .landing .navbar{
+            height: 72px;
+            background: white;
+            border-bottom: 1px solid #e7eaf0;
+
+            position: sticky;
+            top: 0;
+
+            z-index: 1000;
+        }
+
+        .landing .nav-container{
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* On desktop the menu wrapper is invisible to layout */
+
+        .landing .nav-menu{
+            display: contents;
+        }
+
+
+        /* LOGO */
+
+        .landing .logo{
+            display: flex;
+            align-items: center;
+            gap: 9px;
+
+            font-size: 19px;
+            font-weight: 800;
+
+            color: #0c2345;
+        }
+
+        .landing .logo-icon{
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #1559c7;
+            color: white;
+
+            border-radius: 7px;
+
+            font-size: 18px;
+        }
+
+
+        /* NAVIGATION LINKS */
+
+        .landing .nav-links{
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .landing .nav-links a{
+            color: #5c6575;
+
+            font-size: 14px;
+            font-weight: 500;
+
+            transition: 0.2s;
+        }
+
+        .landing .nav-links a:hover,
+.landing .nav-links a.active{
+            color: #1559c7;
+        }
+
+
+        /* NAVIGATION BUTTONS */
+
+        .landing .nav-buttons{
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .landing .welcome-text{
+            color: #5c6575;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            margin-right: 6px;
+        }
+
+        .landing .welcome-text strong{
+            color: #102442;
+        }
+
+        .landing .notif-badge{
+            display: inline-block;
+
+            min-width: 18px;
+
+            padding: 0 6px;
+
+            margin-left: 6px;
+
+            background: #d93025;
+            color: white;
+
+            border-radius: 10px;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            text-align: center;
+        }
+
+
+        /* MOBILE MENU */
+
+        .landing .menu-button{
+            display: none;
+
+            background: none;
+            border: none;
+
+            font-size: 25px;
+
+            cursor: pointer;
+        }
+
+
+        /* =====================================================
+           HERO SECTION
+        ====================================================== */
+
+        .landing .hero{
+            background: #f6f8fb;
+
+            padding: 70px 0 65px;
+        }
+
+        .landing .hero-container{
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            align-items: center;
+
+            gap: 55px;
+        }
+
+
+        /* HERO TEXT */
+
+        .landing .hero-label,
+.landing .section-label{
+            display: inline-block;
+
+            color: #1559c7;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            margin-bottom: 15px;
+        }
+
+        .landing .hero h1{
+            max-width: 600px;
+
+            color: #102442;
+
+            font-size: clamp(38px, 5vw, 58px);
+
+            line-height: 1.08;
+
+            letter-spacing: -2px;
+
+            margin-bottom: 22px;
+        }
+
+        .landing .hero h1 span{
+            display: block;
+            color: #1559c7;
+        }
+
+        .landing .hero-content > p{
+            max-width: 570px;
+
+            color: #626c7d;
+
+            font-size: 17px;
+
+            margin-bottom: 30px;
+        }
+
+
+        /* HERO BUTTONS */
+
+        .landing .hero-buttons{
+            display: flex;
+
+            gap: 12px;
+
+            margin-bottom: 32px;
+        }
+
+
+        /* HERO TRUST */
+
+        .landing .hero-trust{
+            display: flex;
+            flex-wrap: wrap;
+
+            gap: 20px;
+        }
+
+        .landing .trust-item{
+            display: flex;
+            align-items: center;
+
+            gap: 7px;
+
+            color: #566071;
+
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .landing .trust-icon{
+            width: 19px;
+            height: 19px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #dcecff;
+            color: #1559c7;
+
+            border-radius: 50%;
+
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+
+        /* =====================================================
+           HERO IMAGE
+        ====================================================== */
+
+        .landing .hero-image{
+            height: 450px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 14px;
+
+            box-shadow: 0 15px 45px rgba(20, 39, 70, 0.15);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #122b4d,
+                    #315b88
+                );
+        }
+
+        .landing .garage-background{
+            position: absolute;
+
+            inset: 0;
+
+            background:
+                linear-gradient(
+                    rgba(7, 23, 43, 0.25),
+                    rgba(7, 23, 43, 0.55)
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    rgba(255,255,255,0.04) 0px,
+                    rgba(255,255,255,0.04) 2px,
+                    transparent 2px,
+                    transparent 80px
+                );
+        }
+
+
+        /* CAR ILLUSTRATION */
+
+        .landing .car{
+            position: absolute;
+
+            width: 75%;
+            height: 120px;
+
+            left: 12%;
+            bottom: 120px;
+
+            background: #dce4ed;
+
+            border-radius: 65px 65px 20px 20px;
+
+            box-shadow:
+                inset 0 -20px 0 rgba(0,0,0,0.08),
+                0 20px 35px rgba(0,0,0,0.25);
+        }
+
+        .landing .car-roof{
+            position: absolute;
+
+            width: 55%;
+            height: 85px;
+
+            left: 23%;
+            top: -55px;
+
+            background: #dce4ed;
+
+            border-radius: 80px 80px 0 0;
+        }
+
+        .landing .window{
+            position: absolute;
+
+            width: 45%;
+            height: 48px;
+
+            left: 28%;
+            top: -42px;
+
+            background: #1b3553;
+
+            border-radius: 35px 35px 5px 5px;
+
+            border: 4px solid #c5d0dd;
+        }
+
+        .landing .wheel{
+            position: absolute;
+
+            width: 45px;
+            height: 45px;
+
+            bottom: -22px;
+
+            background: #10151c;
+
+            border-radius: 50%;
+
+            border: 8px solid #4b5664;
+        }
+
+        .landing .wheel-left{
+            left: 12%;
+        }
+
+        .landing .wheel-right{
+            right: 12%;
+        }
+
+        .landing .headlight{
+            position: absolute;
+
+            width: 28px;
+            height: 16px;
+
+            right: 10px;
+            top: 42px;
+
+            background: #f8f0b2;
+
+            border-radius: 10px;
+        }
+
+
+        /* MECHANIC ICON */
+
+        .landing .mechanic{
+            position: absolute;
+
+            width: 80px;
+            height: 140px;
+
+            right: 9%;
+            bottom: 90px;
+        }
+
+        .landing .mechanic-head{
+            width: 42px;
+            height: 42px;
+
+            margin: auto;
+
+            background: #e0a27c;
+
+            border-radius: 50%;
+        }
+
+        .landing .mechanic-body{
+            width: 65px;
+            height: 80px;
+
+            margin: -3px auto 0;
+
+            background: #1559c7;
+
+            border-radius: 18px 18px 8px 8px;
+        }
+
+        .landing .mechanic-tool{
+            position: absolute;
+
+            width: 45px;
+            height: 8px;
+
+            background: #777;
+
+            right: -15px;
+            top: 65px;
+
+            transform: rotate(-30deg);
+
+            border-radius: 5px;
+        }
+
+
+        /* HERO FLOATING CARD */
+
+        .landing .hero-image-card{
+            position: absolute;
+
+            left: 25px;
+            bottom: 25px;
+
+            z-index: 5;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            background: rgba(255,255,255,0.96);
+
+            padding: 13px 17px;
+
+            border-radius: 9px;
+
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .landing .card-icon{
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #e3f6eb;
+
+            color: #159447;
+
+            border-radius: 50%;
+
+            font-weight: bold;
+        }
+
+        .landing .hero-image-card strong{
+            display: block;
+
+            color: #182236;
+
+            font-size: 13px;
+        }
+
+        .landing .hero-image-card p{
+            color: #747d8b;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           FEATURE CARDS
+        ====================================================== */
+
+        .landing .features{
+            background: white;
+
+            border-bottom: 1px solid #edf0f4;
+        }
+
+        .landing .features-grid{
+            display: grid;
+
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .landing .feature-card{
+            display: flex;
+            align-items: center;
+
+            gap: 16px;
+
+            padding: 28px 30px;
+
+            border-right: 1px solid #edf0f4;
+        }
+
+        .landing .feature-card:last-child{
+            border-right: none;
+        }
+
+        .landing .feature-icon{
+            width: 48px;
+            height: 48px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eaf2ff;
+
+            border-radius: 9px;
+
+            font-size: 21px;
+        }
+
+        .landing .feature-card h3{
+            font-size: 15px;
+
+            margin-bottom: 3px;
+        }
+
+        .landing .feature-card p{
+            color: #737c8c;
+
+            font-size: 12px;
+        }
+
+
+        /* =====================================================
+           GENERAL SECTION
+        ====================================================== */
+
+        .landing .services,
+.landing .how-it-works,
+.landing .about{
+            padding: 90px 0;
+        }
+
+        .landing .section-heading{
+            max-width: 650px;
+
+            margin: 0 auto 50px;
+
+            text-align: center;
+        }
+
+        .landing .section-heading h2{
+            color: #102442;
+
+            font-size: 35px;
+
+            line-height: 1.2;
+
+            margin-bottom: 14px;
+        }
+
+        .landing .section-heading p{
+            color: #697385;
+
+            font-size: 15px;
+        }
+
+
+        /* =====================================================
+           SERVICES
+        ====================================================== */
+
+        .landing .services{
+            background: white;
+        }
+
+        .landing .services-grid{
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 20px;
+        }
+
+        .landing .service-card{
+            display: flex;
+            flex-direction: column;
+
+            padding: 28px 24px;
+
+            border: 1px solid #e5e9ef;
+
+            border-radius: 10px;
+
+            background: white;
+
+            transition: 0.25s ease;
+        }
+
+        .landing .service-card:hover{
+            transform: translateY(-5px);
+
+            border-color: #c9dafa;
+
+            box-shadow: 0 12px 30px rgba(18,48,90,0.08);
+        }
+
+        .landing .service-icon{
+            width: 48px;
+            height: 48px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #eaf2ff;
+
+            border-radius: 9px;
+
+            font-size: 22px;
+
+            margin-bottom: 20px;
+        }
+
+        .landing .service-card h3{
+            font-size: 17px;
+
+            margin-bottom: 10px;
+        }
+
+        .landing .service-card p{
+            color: #70798a;
+
+            font-size: 13px;
+
+            margin-bottom: 14px;
+        }
+
+        .landing .service-price{
+            color: #102442;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            margin-top: auto;
+
+            margin-bottom: 14px;
+        }
+
+        .landing .service-card a{
+            color: #1559c7;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .landing .no-services{
+            grid-column: 1 / -1;
+
+            text-align: center;
+
+            color: #70798a;
+        }
+
+
+        /* =====================================================
+           HOW IT WORKS
+        ====================================================== */
+
+        .landing .how-it-works{
+            background: #f6f8fb;
+        }
+
+        .landing .steps{
+            display: grid;
+
+            grid-template-columns: repeat(4, 1fr);
+
+            gap: 30px;
+        }
+
+        .landing .step{
+            text-align: center;
+        }
+
+        .landing .step-number{
+            width: 60px;
+            height: 60px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin: 0 auto 20px;
+
+            background: #1559c7;
+            color: white;
+
+            border-radius: 50%;
+
+            font-size: 14px;
+
+            font-weight: 700;
+        }
+
+        .landing .step h3{
+            font-size: 16px;
+
+            margin-bottom: 8px;
+        }
+
+        .landing .step p{
+            color: #717a8a;
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           ABOUT SECTION
+        ====================================================== */
+
+        .landing .about{
+            background: white;
+        }
+
+        .landing .about-container{
+            display: grid;
+
+            grid-template-columns: 1fr 1fr;
+
+            align-items: center;
+
+            gap: 65px;
+        }
+
+        .landing .about-image{
+            height: 430px;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border-radius: 12px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #173557,
+                    #4778a8
+                );
+        }
+
+        .landing .about-image::before{
+            content: "🔧";
+
+            position: absolute;
+
+            font-size: 130px;
+
+            left: 50%;
+            top: 50%;
+
+            transform: translate(-50%, -50%);
+
+            opacity: 0.9;
+        }
+
+        .landing .about-content h2{
+            color: #102442;
+
+            font-size: 35px;
+
+            line-height: 1.2;
+
+            margin-bottom: 20px;
+        }
+
+        .landing .about-content > p{
+            color: #687284;
+
+            font-size: 14px;
+
+            margin-bottom: 15px;
+        }
+
+        .landing .about-list{
+            display: grid;
+
+            gap: 11px;
+
+            margin: 25px 0 30px;
+        }
+
+        .landing .about-list div{
+            display: flex;
+            align-items: center;
+
+            gap: 10px;
+
+            color: #4e596a;
+
+            font-size: 13px;
+        }
+
+        .landing .about-list span{
+            width: 20px;
+            height: 20px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #e3f6eb;
+
+            color: #159447;
+
+            border-radius: 50%;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           CTA SECTION
+        ====================================================== */
+
+        .landing .cta{
+            background: #1559c7;
+
+            padding: 55px 0;
+        }
+
+        .landing .cta-container{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 30px;
+        }
+
+        .landing .cta h2{
+            color: white;
+
+            font-size: 30px;
+
+            margin-bottom: 8px;
+        }
+
+        .landing .cta p{
+            color: #dce8fa;
+
+            font-size: 14px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ====================================================== */
+
+        .landing .footer{
+            background: #0b1d35;
+
+            color: white;
+        }
+
+        .landing .footer-grid{
+            display: grid;
+
+            grid-template-columns: 2fr 1fr 1fr 1.5fr;
+
+            gap: 50px;
+
+            padding: 60px 0;
+        }
+
+        .landing .footer-logo{
+            display: inline-block;
+
+            font-size: 20px;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+        }
+
+        .landing .footer-column > p{
+            color: #aeb9c9;
+
+            font-size: 13px;
+        }
+
+        .landing .footer-column h3{
+            font-size: 14px;
+
+            margin-bottom: 18px;
+        }
+
+        .landing .footer-column a{
+            display: block;
+
+            color: #aeb9c9;
+
+            font-size: 13px;
+
+            margin-bottom: 10px;
+
+            transition: 0.2s;
+        }
+
+        .landing .footer-column a:hover{
+            color: white;
+        }
+
+        .landing .footer-column p{
+            margin-bottom: 9px;
+        }
+
+        .landing .footer-bottom{
+            border-top: 1px solid rgba(255,255,255,0.1);
+
+            padding: 20px 0;
+        }
+
+        .landing .footer-bottom p{
+            color: #8491a4;
+
+            font-size: 11px;
+
+            text-align: center;
+        }
+
+
+        /* =====================================================
+           TABLET
+        ====================================================== */
+
+        @media (max-width: 1000px) {
+
+            .landing .nav-links{
+                gap: 18px;
+            }
+
+            .landing .hero-container{
+                gap: 35px;
+            }
+
+            .landing .services-grid{
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .landing .steps{
+                grid-template-columns: repeat(2, 1fr);
+
+                gap: 40px;
+            }
+
+            .landing .footer-grid{
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ====================================================== */
+
+        @media (max-width: 760px) {
+
+            .landing .navbar{
+                height: 65px;
+            }
+
+            .landing .menu-button{
+                display: block;
+            }
+
+            /* Menu is hidden until the hamburger is tapped */
+
+            .landing .nav-menu{
+                display: none;
+            }
+
+            .landing .navbar.open .nav-menu{
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+
+                gap: 18px;
+
+                position: absolute;
+
+                top: 65px;
+                left: 0;
+                right: 0;
+
+                padding: 20px 4% 24px;
+
+                background: white;
+
+                border-bottom: 1px solid #e7eaf0;
+
+                box-shadow: 0 12px 25px rgba(0,0,0,0.08);
+            }
+
+            .landing .navbar.open .nav-links{
+                flex-direction: column;
+                align-items: flex-start;
+
+                gap: 14px;
+            }
+
+            .landing .navbar.open .nav-buttons{
+                flex-wrap: wrap;
+            }
+
+            .landing .hero{
+                padding: 50px 0;
+            }
+
+            .landing .hero-container{
+                grid-template-columns: 1fr;
+            }
+
+            .landing .hero h1{
+                font-size: 42px;
+            }
+
+            .landing .hero-image{
+                height: 350px;
+            }
+
+            .landing .features-grid{
+                grid-template-columns: 1fr;
+            }
+
+            .landing .feature-card{
+                border-right: none;
+
+                border-bottom: 1px solid #edf0f4;
+            }
+
+            .landing .services-grid{
+                grid-template-columns: 1fr;
+            }
+
+            .landing .about-container{
+                grid-template-columns: 1fr;
+
+                gap: 35px;
+            }
+
+            .landing .about-image{
+                height: 320px;
+            }
+
+            .landing .cta-container{
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+        }
+
+
+        /* =====================================================
+           SMALL MOBILE
+        ====================================================== */
+
+        @media (max-width: 500px) {
+
+            .landing .hero h1{
+                font-size: 35px;
+
+                letter-spacing: -1px;
+            }
+
+            .landing .hero-buttons{
+                flex-direction: column;
+            }
+
+            .landing .hero-buttons .btn{
+                width: 100%;
+            }
+
+            .landing .hero-trust{
+                flex-direction: column;
+
+                gap: 10px;
+            }
+
+            .landing .section-heading h2,
+.landing .about-content h2{
+                font-size: 28px;
+            }
+
+            .landing .steps{
+                grid-template-columns: 1fr;
+            }
+
+            .landing .footer-grid{
+                grid-template-columns: 1fr;
+            }
+
+        }

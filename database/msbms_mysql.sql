@@ -34,9 +34,9 @@ CREATE TABLE payments (payment_id INT AUTO_INCREMENT PRIMARY KEY, booking_id INT
 INSERT INTO users(
 full_name,email,password,role,phone,address)
 VALUES ('System Administrator','admin@msbms.com', '123','admin','0710000000','Durban'),
-('John Mechanic','mechanic@msbms.com','$2y$12$oM0KsFu6Bs.eltyu264Ob.mMZJAdsFxEuuv87xjqx.JwV6xtMrtJ2','mechanic','0720000000','Durban'),
-('David Customer','customer@msbms.com','$2y$12$q3cBoo32iLwAO.vOsPvLuuClpCSsFUHmkCOzNyrIehvddqxioLfy6','customer','0730000000','Durban'),
-('Sarah Customer','sarah@msbms.com','$2y$12$q3cBoo32iLwAO.vOsPvLuuClpCSsFUHmkCOzNyrIehvddqxioLfy6','customer','0740000000','Durban');
+('Matt Armstrong','mechanic@msbms.com','$2y$10$ZaPVagvCjpdtW5S1vFlmfeodfAHrHCFmhB2L5Bo8QNHxux/Rvjhs.','mechanic','0720000000','Durban'),
+('Lionel Messi','customer@msbms.com','$2y$10$ZaPVagvCjpdtW5S1vFlmfeodfAHrHCFmhB2L5Bo8QNHxux/Rvjhs.','customer','0730000000','Durban'),
+('Lewis hamilton','sarah@msbms.com','$2y$10$ZaPVagvCjpdtW5S1vFlmfeodfAHrHCFmhB2L5Bo8QNHxux/Rvjhs.','customer','0740000000','Durban');
 INSERT INTO services(service_name,description,price) VALUES ('Oil Change','Engine oil and oil filter replacement',650),
 ('Brake Service','Brake inspection and brake pad replacement',1200),('Engine Diagnostic','Full engine computer diagnostic',500),
 ('Wheel Alignment','Four-wheel alignment and adjustment',450),('Battery Replacement','Vehicle battery testing and replacement',1500),
