@@ -28,19 +28,16 @@ $user = $userController->profile();
         <div class="logo"><span class="logo-mark">✦</span> MSBMS</div>
         <nav class="nav">
             <a href="index.php"><span class="icon">🏠</span>Dashboard</a>
-            <a href="bookings.php"><span class="icon">📅</span>My Bookings</a>
+            <a href="booking_create.php"><span class="icon">📅</span>My Bookings</a>
             <a href="vehicles.php"><span class="icon">🚗</span>My Vehicles</a>
             <a href="history.php"><span class="icon">🔧</span>Service History</a>
             <a href="notifications.php"><span class="icon">🔔</span>Notifications</a>
-            <a class="active" href="profile.php"><span class="icon">👤</span>Profile</a>
+            <a href="profile.php"><span class="icon">⚙️</span>Profile Settings</a>
             <a href="logout.php"><span class="icon">↪</span>Logout</a>
         </nav>
     </aside>
 
     <main class="main">
-        <p style="margin-bottom:16px">
-            <a href="index.php" style="color:var(--blue);font-size:13px;font-weight:600">&larr; Back to Dashboard</a>
-        </p>
 
         <div class="topbar">
             <div class="title">
@@ -83,13 +80,19 @@ $user = $userController->profile();
 
                 <button class="btn" type="submit">Save Changes</button>
             </form>
+            <br>
+            <a href="customer.php" style="color:var(--blue);font-size:13px;font-weight:600">&larr; Back to Dashboard</a>
+            
         </div>
 
         <div style="margin-top:28px;color:#a0a8b5;font-size:10px">
             &copy; <?= date('Y') ?> MSBMS &middot; Motor Service Booking Management System
+            
         </div>
     </main>
-
+    
 </div>
+
+
 </body>
 </html>

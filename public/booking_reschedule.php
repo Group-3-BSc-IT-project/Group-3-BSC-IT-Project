@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="vehicles.php"><span class="icon">🚗</span>My Vehicles</a>
             <a href="history.php"><span class="icon">🔧</span>Service History</a>
             <a href="notifications.php"><span class="icon">🔔</span>Notifications</a>
-            <a href="profile.php"><span class="icon">👤</span>Profile</a>
+            <a href="profile.php"><span class="icon">⚙️</span>Profile</a>
             <?php if (Session::userId()): ?>
                 <a href="logout.php"><span class="icon">↪</span>Logout</a>
             <?php endif; ?>

@@ -129,9 +129,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Email</label>
                 <input type="email" name="email" required>
             </div>
+            <!-- WITH THIS -->
             <div class="field">
                 <label>Password</label>
-                <input type="password" name="password" required>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="passwordInput" required>
+                    <button type="button" class="btn-toggle-password" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                        Show
+                    </button>
+                </div>
             </div>
             <button class="btn">Login</button>
         </form>
@@ -265,6 +271,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 .toggle("open");
 
         });
+
+        const passwordInput = document.getElementById("passwordInput");
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+
+        if (passwordInput && togglePasswordBtn) {
+            togglePasswordBtn.addEventListener("click", function () {
+                const isPassword = passwordInput.getAttribute("type") === "password";
+                passwordInput.setAttribute("type", isPassword ? "text" : "password");
+                this.textContent = isPassword ? "Hide" : "Show";
+            });
+        }
 
 </script>
 

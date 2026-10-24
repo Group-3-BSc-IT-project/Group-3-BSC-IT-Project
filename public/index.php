@@ -56,14 +56,6 @@ if ($role === "customer") {
 }
 
 
-/*
-|--------------------------------------------------------------------------
-| "Book a Service" link
-| Not logged in -> login
-| Customer      -> booking page
-| Mechanic/Admin-> their dashboard
-|--------------------------------------------------------------------------
-*/
 
 if (!$isLoggedIn) {
 
@@ -71,7 +63,7 @@ if (!$isLoggedIn) {
 
 } elseif ($role === "customer") {
 
-    $bookLink = $base . "/bookings/create_booking.php";
+    $bookLink = $base . "/booking_create.php";
 
 } else {
 
@@ -210,9 +202,6 @@ function serviceIcon($name)
 
                         </a>
 
-                        <a href="<?php echo htmlspecialchars($dashboardLink); ?>" class="btn btn-login">
-                            Dashboard
-                        </a>
 
                         <a href="<?php echo $base; ?>/logout.php" class="btn btn-signup">
                             Logout

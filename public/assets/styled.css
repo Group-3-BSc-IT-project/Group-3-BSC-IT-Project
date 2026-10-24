@@ -616,7 +616,35 @@ body.landing{font-size:16px}
             background: #f1f4f9;
         }
 
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+        }
 
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 4rem; /* Extra padding so text doesn't overlap the button */
+            box-sizing: border-box;
+        }
+
+        .btn-toggle-password {
+            position: absolute;
+            right: 0.75rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #64748b;
+            padding: 0.25rem 0.5rem;
+            user-select: none;
+        }
+
+        .btn-toggle-password:hover {
+            color: #1e293b;
+        }
         /* =====================================================
            NAVIGATION BAR
         ====================================================== */

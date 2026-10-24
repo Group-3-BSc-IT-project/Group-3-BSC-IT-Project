@@ -40,6 +40,7 @@ function mechanicStatusBadgeClass($status) {
         <nav class="nav">
             <a class="active" href="mechanic.php"><span class="icon">🏠</span>Dashboard</a>
             <a href="notifications.php"><span class="icon">🔔</span>Notifications<?php if ($unread): ?> (<?= e($unread) ?>)<?php endif; ?></a>
+            <a href="profile.php"><span class="icon">⚙️</span>Profile Settings</a>
             <?php if (Session::userId()): ?>
                 <a href="logout.php"><span class="icon">↪</span>Logout</a>
             <?php endif; ?>

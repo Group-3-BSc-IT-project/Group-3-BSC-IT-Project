@@ -36,6 +36,7 @@ $dashboardLink = match ($role) {
             <a href="vehicle_create.php"><span class="icon">➕</span>Add Vehicle</a>
             <a href="services.php"><span class="icon">🔧</span>Services</a>
             <a href="notifications.php"><span class="icon">🔔</span>Notifications</a>
+            <a href="profile.php"><span class="icon">⚙️</span>Profile Settings</a>
             <?php if (Session::userId()): ?>
                 <a href="logout.php"><span class="icon">↪</span>Logout</a>
             <?php endif; ?>
