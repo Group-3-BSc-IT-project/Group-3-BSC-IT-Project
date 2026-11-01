@@ -146,6 +146,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             Don't have an account?
             <a href="register.php">Create customer account</a>
         </p>
+        <p class="auth-footer">
+            Forgot your password?
+            <a href="forgot_password.php">Reset it here</a>
+        </p>
     </div>
 </div>
 

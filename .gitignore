@@ -1,0 +1,10 @@
+/vendor/
+/app/config/mail.php
+/config/mail.php
+/app/config/database.php
+public/test_mail.php
+public/test_send.php
+*.log
+.env
+.vscode/
+.idea/

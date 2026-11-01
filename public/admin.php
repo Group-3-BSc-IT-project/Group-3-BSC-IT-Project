@@ -43,6 +43,7 @@ function statusBadgeClass($status) {
             <a href="vehicle_create.php"><span class="icon">➕</span>Add Vehicle</a>
             <a href="vehicles.php"><span class="icon">🚗</span>Vehicles</a>
             <a href="services.php"><span class="icon">🔧</span>Services</a>
+        <a href="quotes.php"><span class="icon">💬</span>Quote Requests</a>  
             <a href="history.php"><span class="icon">🔧</span>Service History</a>
             <a href="notifications.php"><span class="icon">🔔</span>Notifications</a>
             <a href="profile.php"><span class="icon">⚙️</span>Profile Settings</a>

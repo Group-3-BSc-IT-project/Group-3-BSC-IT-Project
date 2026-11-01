@@ -1,14 +1,24 @@
 <?php
 require_once __DIR__ . '/_init.php';
+require_once __DIR__ . '/../app/Services/PasswordPolicy.php';
 
 // ---- Logic ----
 $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    [$ok, $message] = $authController->register();
-    if ($ok) {
-        header('Location: login.php');
-        exit;
+    $error = PasswordPolicy::validate(
+        $_POST['password'] ?? '',
+        trim($_POST['email'] ?? '')
+    );
+
+    if ($error !== null) {
+        $message = $error;
+    } else {
+        [$ok, $message] = $authController->register();
+        if ($ok) {
+            header('Location: login.php');
+            exit;
+        }
     }
 }
 ?>
@@ -118,23 +128,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input name="full_name" required>
                 </div>
                 <div class="field">
-                    <label>Email:</label>
+                    <label>Email Address:</label>
                     <input type="email" name="email" required>
                 </div>
             </div>
             <div class="form-row">
                 <div class="field">
                     <label>Phone:</label>
-                    <input name="phone">
+                    <input type="tel" name="phone" required pattern="^(\+27|0)[6-8][0-9]{8}$" placeholder="e.g. 0821234567">
                 </div>
                 <div class="field">
-                    <label>Password:</label>
-                    <input type="password" name="password" required>
+                    <label>Address:</label>
+                    <input name="address">
                 </div>
             </div>
+            
             <div class="field">
-                <label>Address:</label>
-                <input name="address">
+                <label>Password:</label>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="passwordInput" minlength="8" maxlength="72" required>
+                    <button type="button" class="btn-toggle-password" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                        Show
+                    </button>
+                </div>
+                <ul id="pwRules" style="font-size:12px;list-style:none;padding:0;margin:6px 0 0">
+                    <li data-rule="len">At least 8 characters</li>
+                    <li data-rule="upper">An uppercase letter</li>
+                    <li data-rule="lower">A lowercase letter</li>
+                    <li data-rule="num">A number</li>
+                    <li data-rule="special">A special character</li>
+                </ul>
             </div>
             <button class="btn">Register</button>
         </form>
@@ -267,6 +290,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 .toggle("open");
 
         });
+        (function () {
+            const input = document.querySelector('input[name="password"]');
+            if (!input) return;
+            const tests = {
+                len:     v => v.length >= 8,
+                upper:   v => /[A-Z]/.test(v),
+                lower:   v => /[a-z]/.test(v),
+                num:     v => /\d/.test(v),
+                special: v => /[^A-Za-z0-9]/.test(v)
+            };
+            const items = document.querySelectorAll('#pwRules li');
+            items.forEach(li => li.dataset.text = li.textContent);
+            function update() {
+                items.forEach(function (li) {
+                    const ok = tests[li.dataset.rule](input.value);
+                    li.style.color = ok ? '#9ce1b6' : '#6b7280';
+                    li.textContent = (ok ? '✓ ' : '• ') + li.dataset.text;
+                });
+            }
+            input.addEventListener('input', update);
+            update();
+        })();
+
+        const passwordInput = document.getElementById("passwordInput");
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+
+        if (passwordInput && togglePasswordBtn) {
+            togglePasswordBtn.addEventListener("click", function () {
+                const isPassword = passwordInput.getAttribute("type") === "password";
+                passwordInput.setAttribute("type", isPassword ? "text" : "password");
+                this.textContent = isPassword ? "Hide" : "Show";
+            });
+        }
 
 </script>
 

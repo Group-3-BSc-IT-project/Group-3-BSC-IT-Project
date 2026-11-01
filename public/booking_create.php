@@ -20,7 +20,7 @@ $services = $bookingController->services();
 $message  = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    [$ok, $message] = $bookingController->create();
+[$ok, $message] = $bookingController->createCustom();
     if ($ok) {
         header('Location: customer.php');
         exit;
@@ -93,13 +93,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="field">
                             <label for="service_id">Service</label>
                             <select id="service_id" name="service_id" required>
-                                <option value="">Select service</option>
-                                <?php foreach ($services as $s): ?>
-                                    <option value="<?= $s['service_id'] ?>">
-                                        <?= e($s['service_name']) ?> - R<?= number_format((float)$s['price'], 2) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                        <option value="">Select service</option>
+                        <?php foreach ($services as $s): ?>
+                            <?php if ($s['service_name'] === 'Other') continue; ?>
+                            <option value="<?= $s['service_id'] ?>">
+                                <?= e($s['service_name']) ?> - R<?= number_format((float)$s['price'], 2) ?>
+                            </option>
+                        <?php endforeach; ?>
+                        <option value="other">Other (describe what you need)</option>
+                    </select>
                         </div>
                     </div>
 
@@ -113,7 +115,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input id="booking_time" type="time" name="booking_time" required>
                         </div>
                     </div>
+                    <div class="field" id="customServiceBox" style="display:none">
+                        <label for="custom_service">Describe the service you need</label>
+                        <input id="custom_service" type="text" name="custom_service" maxlength="255"
+                            placeholder="e.g. Clutch noise when changing gear">
+                    </div>
 
+                    <div class="field">
+                        <label style="display:flex;gap:8px;align-items:center">
+                            <input type="checkbox" name="want_quote" value="1" style="width:auto">
+                            Send me a price quote before the work starts
+                        </label>
+                    </div>
                     <div class="field">
                         <label for="notes">Notes</label>
                         <textarea id="notes" name="notes" placeholder="Notes" rows="4"
@@ -127,5 +140,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
 </div>
+<script>
+    const sel = document.getElementById('service_id');
+    const box = document.getElementById('customServiceBox');
+    const inp = document.getElementById('custom_service');
+    sel.addEventListener('change', function () {
+        const other = sel.value === 'other';
+        box.style.display = other ? 'block' : 'none';
+        inp.required = other;
+    });
+</script>
 </body>
 </html>

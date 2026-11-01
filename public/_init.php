@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../app/bootstrap.php';
+date_default_timezone_set('Africa/Johannesburg');
 
 // ---- Repositories ----
 $userRepo         = new UserRepository($db);

@@ -5,4 +5,12 @@ class RepairRepository
     public function bookingBelongsToMechanic(int $bookingId,int $mechanicId): bool { $s=$this->db->prepare('SELECT booking_id FROM bookings WHERE booking_id=? AND mechanic_id=?');$s->execute([$bookingId,$mechanicId]);return(bool)$s->fetch(); }
     public function create(Repair $r): bool { $s=$this->db->prepare('INSERT INTO repairs(booking_id,mechanic_id,description,status,cost,repair_date) VALUES(?,?,?,?,?,?)');return$s->execute([$r->bookingId(),$r->mechanicId(),$r->description(),$r->status(),$r->cost(),$r->repairDate()]); }
     public function all(): array { $s=$this->db->query('SELECT repair_id,booking_id,mechanic_id,description,status,cost,repair_date,created_at FROM repairs ORDER BY created_at DESC');return$s->fetchAll(PDO::FETCH_ASSOC); }
+
+
+    public function totalCost(int $bookingId, int $mechanicId): float
+    {
+    $s = $this->db->prepare('SELECT COALESCE(SUM(cost),0) AS total FROM repairs WHERE booking_id=? AND mechanic_id=?');
+    $s->execute([$bookingId, $mechanicId]);
+    return (float)$s->fetch(PDO::FETCH_ASSOC)['total'];
+    }
 }

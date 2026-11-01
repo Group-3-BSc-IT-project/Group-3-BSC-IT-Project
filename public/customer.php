@@ -76,16 +76,34 @@ function statusBadgeClass($status) {
                         <th>Date</th>
                         <th>Time</th>
                         <th>Status</th>
+                        <th>Price / Quote</th>
                         <th>Actions</th>
                     </tr>
                     <?php foreach ($bookings as $b): ?>
                         <tr>
                             <td><?= e($b['booking_id']) ?></td>
                             <td><?= e($b['registration_number']) ?></td>
-                            <td><?= e($b['service_name']) ?></td>
-                            <td><?= e($b['booking_date']) ?></td>
+                            <td><?= e($b['custom_service'] ?: $b['service_name']) ?></td>                            <td><?= e($b['booking_date']) ?></td>
                             <td><?= e($b['booking_time']) ?></td>
                             <td><span class="<?= statusBadgeClass($b['status']) ?>"><?= e($b['status']) ?></span></td>
+                            <td>
+                                <?php if ($b['final_price'] !== null): ?>
+                                    R<?= number_format((float)$b['final_price'], 2) ?> (final)
+                                <?php elseif ($b['quote_status'] === 'Requested'): ?>
+                                    <span class="badge yellow">Quote requested</span>
+                                <?php elseif ($b['quote_status'] === 'Quoted'): ?>
+                                    Quote: <strong>R<?= number_format((float)$b['quote_price'], 2) ?></strong>
+                                    <form method="post" action="quote_respond.php" style="display:inline">
+                                        <input type="hidden" name="booking_id" value="<?= e($b['booking_id']) ?>">
+                                        <button class="btn" name="decision" value="accept">Accept</button>
+                                        <button class="btn secondary" name="decision" value="decline">Decline</button>
+                                    </form>
+                                <?php elseif ($b['quote_status'] === 'Accepted'): ?>
+                                    R<?= number_format((float)$b['quote_price'], 2) ?> (quote accepted)
+                                <?php else: ?>
+                                    R<?= number_format((float)$b['price'], 2) ?> (estimated)
+                                <?php endif; ?>
+                            </td>
                             <td>
                                 <div class="actions">
                                     <?php if ($b['status'] !== 'Canceled' && $b['status'] !== 'Completed'): ?>

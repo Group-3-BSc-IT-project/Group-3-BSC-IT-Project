@@ -40,7 +40,8 @@ function mechanicStatusBadgeClass($status) {
         <nav class="nav">
             <a class="active" href="mechanic.php"><span class="icon">🏠</span>Dashboard</a>
             <a href="notifications.php"><span class="icon">🔔</span>Notifications<?php if ($unread): ?> (<?= e($unread) ?>)<?php endif; ?></a>
-            <a href="profile.php"><span class="icon">⚙️</span>Profile Settings</a>
+            <a href="quotes.php"><span class="icon">💬</span>Quote Requests</a>
+                <a href="profile.php"><span class="icon">⚙️</span>Profile Settings</a>
             <?php if (Session::userId()): ?>
                 <a href="logout.php"><span class="icon">↪</span>Logout</a>
             <?php endif; ?>
@@ -83,6 +84,8 @@ function mechanicStatusBadgeClass($status) {
                             <td><?= e($b['service_name']) ?></td>
                             <td><?= e($b['booking_date']) ?></td>
                             <td><?= e($b['booking_time']) ?></td>
+                           <a href="quotes.php"><span class="icon">💬</span>Quote Requests</a>
+                            <a href="create_mechanic.php"><span class="icon">🧰</span>Create Mechanic</a>
                             <td><span class="<?= mechanicStatusBadgeClass($b['status']) ?>"><?= e($b['status']) ?></span></td>
                             <td>
                                 <?php if ($b['status'] !== 'Completed'): ?>
