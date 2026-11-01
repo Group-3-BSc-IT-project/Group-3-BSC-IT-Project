@@ -36,6 +36,11 @@ class UserController
         return $user;
     }
 
+    if ($phone !== '' && !preg_match('/^\d{10}$/', $phone)) {
+    return [false, 'Phone number must be exactly 10 digits.'];
+}
+
+
     /**
      * Handle the profile update form submission.
      * Returns [bool $ok, string $message].
