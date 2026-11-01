@@ -16,8 +16,8 @@ $message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     [$ok, $message] = $repairController->create($id);
     if ($ok) {
-        header('Location: mechanic.php');
-        exit;
+    header('Location: job_complete.php?booking_id=' . $id);
+    exit;
     }
 }
 ?>

@@ -20,7 +20,7 @@ $services = $bookingController->services();
 $message  = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    [$ok, $message] = $bookingController->create();
+[$ok, $message] = $bookingController->createCustom();
     if ($ok) {
         header('Location: customer.php');
         exit;
@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <a href="vehicle_create.php"><i class="icon fa-solid fa-circle-plus" aria-hidden="true"></i>Add Vehicle</a>
             <a href="services.php"><i class="icon fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>Services</a>
             <a href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications</a>
+            <a href="profile.php"><i class="icon fa-solid fa-user" aria-hidden="true"></i>Profile</a>
             <?php if (Session::userId()): ?>
                 <a href="logout.php"><i class="icon fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>Logout</a>
             <?php endif; ?>
@@ -92,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <legend>Select a service</legend>
                         <div class="service-grid">
                             <?php foreach ($services as $s): ?>
+                                <?php if ($s['service_name'] === 'Other') continue; ?>
                                 <label class="service-card">
                                     <input type="radio" name="service_id" value="<?= e($s['service_id']) ?>" required>
                                     <span class="service-content">
@@ -101,8 +103,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     </span>
                                 </label>
                             <?php endforeach; ?>
+                            <label class="service-card">
+                                <input type="radio" name="service_id" value="other" required>
+                                <span class="service-content">
+                                    <strong>Other / Custom Service</strong>
+                                    <small>Describe the work you need and request a quote.</small>
+                                    <b>Price quoted after review</b>
+                                </span>
+                            </label>
                         </div>
                     </fieldset>
+                    <div class="field" id="customServiceBox" style="display:none">
+                        <label for="custom_service">Describe the service you need</label>
+                        <input id="custom_service" type="text" name="custom_service" maxlength="255"
+                            placeholder="e.g. Clutch noise when changing gear">
+                    </div>
                     <div class="booking-details">
                         <h3>Appointment details</h3>
                         <div class="form-row">
@@ -118,7 +133,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </select>
                         </div>
                         </div>
-                        </div>
 
                         <div class="form-row">
                         <div class="field">
@@ -130,7 +144,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input id="booking_time" type="time" name="booking_time" required>
                         </div>
                         </div>
-
+                        <div class="field">
+                            <label style="display:flex;gap:8px;align-items:center">
+                                <input type="checkbox" name="want_quote" value="1" style="width:auto">
+                                Send me a price quote before the work starts
+                            </label>
+                        </div>
                         <div class="field">
                         <label for="notes">Notes</label>
                         <textarea id="notes" name="notes" placeholder="Notes" rows="4"
@@ -148,5 +167,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
 </div>
+<script>
+    const box = document.getElementById('customServiceBox');
+    const inp = document.getElementById('custom_service');
+    document.querySelectorAll('input[name="service_id"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+        const other = radio.value === 'other' && radio.checked;
+        box.style.display = other ? 'block' : 'none';
+        inp.required = other;
+        });
+    });
+</script>
 </body>
 </html>

@@ -21,11 +21,16 @@ class RepairController
 
     public function booking(int $id): ?array
     {
-        return $this->bookings->find($id);
+    return $this->bookings->findForMechanicDetail($id, (int)Session::userId());
     }
 
     public function all(): array
     {
         return $this->service->all();
+    }
+
+    public function totalCost(int $bookingId): float
+    {
+    return $this->service->totalCost($bookingId, (int)Session::userId());
     }
 }

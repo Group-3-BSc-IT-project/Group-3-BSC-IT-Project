@@ -1,13 +1,17 @@
 <?php
 require_once __DIR__ . '/_init.php';
+require_once __DIR__ . '/../app/Repositories/PasswordResetRepository.php';
+require_once __DIR__ . '/../app/Controllers/PasswordResetController.php';
 
-// ---- Logic ----
 Auth::requireRole('admin');
 
+$inviteController = new PasswordResetController(new PasswordResetRepository(), false);
+
 $message = '';
+$ok = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    [$ok, $message] = $authController->createMechanic();
+    [$ok, $message] = $inviteController->inviteMechanic();
 }
 ?>
 <!doctype html>
@@ -24,13 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="card auth-card wide form">
         <div class="auth-logo"><span class="logo-mark"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span>MSBMS</div>
 
-        
-
         <h1>Create Mechanic</h1>
-        <p class="sub">Add a new mechanic account</p>
+        <p class="sub">The mechanic will receive an email to set their own password.</p>
 
         <?php if ($message): ?>
-            <p class="badge yellow auth-message"><?= e($message) ?></p>
+            <p class="badge <?= $ok ? '' : 'yellow' ?> auth-message"><?= e($message) ?></p>
         <?php endif; ?>
 
         <form method="post">
@@ -47,23 +49,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="form-row">
                 <div class="field">
                     <label>Phone</label>
-                    <input name="phone">
+                    <input type="tel" name="phone" pattern="^(\+27|0)[6-8][0-9]{8}$" placeholder="e.g. 0821234567">
                 </div>
                 <div class="field">
-                    <label>Password</label>
-                    <input type="password" name="password" required>
+                    <label>Address</label>
+                    <input name="address">
                 </div>
             </div>
-            <div class="field">
-                <label>Address</label>
-                <input name="address">
-            </div>
-            <button class="btn">Create Mechanic</button>
+            <button class="btn">Create Mechanic &amp; Send Invite</button>
         </form>
 
-        <p class="auth-footer">
-            <a href="index.php">Back to Dashboard</a>
-        </p>
+        <p class="auth-footer"><a href="admin.php">Back to Dashboard</a></p>
     </div>
 </div>
 

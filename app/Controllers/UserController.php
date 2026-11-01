@@ -49,6 +49,10 @@ class UserController
         $phone    = trim($_POST['phone'] ?? '');
         $address  = trim($_POST['address'] ?? '');
 
+        if ($phone !== '' && !preg_match('/^\d{10}$/', $phone)) {
+            return [false, 'Phone number must be exactly 10 digits.'];
+        }
+
         if ($fullName === '' || $email === '') {
             return [false, 'Full name and email are required.'];
         }
