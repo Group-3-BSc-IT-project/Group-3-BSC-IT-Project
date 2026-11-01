@@ -39,17 +39,25 @@ A PHP (OOP) web application for booking and managing vehicle services. Customers
 ```
 MSBMS_OOP/
 ├── app/
+│   ├── bootstrap.php       Loads classes and starts the application
+│   ├── config/             mail.php (not committed), mail.example.php
 │   ├── Controllers/        BookingController, RepairController, PasswordResetController, ...
-│   ├── Services/           BookingService, RepairService, Mailer, BookingMailer, PasswordPolicy
-│   ├── Repositories/       BookingRepository, RepairRepository, NotificationRepository, ...
-│   └── config/             mail.php (not committed), mail.example.php
+│   ├── Core/               Core classes shared by the whole app (e.g. database connection, session, auth)
+│   ├── Libraries/
+│   │   └── PHPMailer/      Bundled copy of PHPMailer
+│   ├── Models/             Entity classes (Booking, Repair, Notification, ...)
+│   ├── Repositories/       Database queries: BookingRepository, RepairRepository, NotificationRepository, ...
+│   └── Services/           Business logic: BookingService, RepairService, Mailer, BookingMailer, PasswordPolicy
+├── config/                 Project-level configuration
 ├── database/
-│   └── schema.sql          Database structure
+│   └── schema.sql          Database structure and sample data
 ├── public/                 Web root: all pages (login.php, customer.php, ...)
 │   ├── _init.php           Bootstraps the app and creates the controllers
 │   └── assets/             CSS and images
 ├── vendor/                 Composer packages (not committed)
+├── .gitignore
 ├── composer.json
+├── composer.lock
 └── README.md
 ```
 
