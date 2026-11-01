@@ -133,17 +133,17 @@ function serviceIcon($name)
 {
     $name = strtolower($name);
 
-    if (strpos($name, "oil") !== false)        return "🛢️";
-    if (strpos($name, "brake") !== false)      return "🛑";
-    if (strpos($name, "diagnostic") !== false) return "🔍";
-    if (strpos($name, "alignment") !== false)  return "🎯";
-    if (strpos($name, "battery") !== false)    return "🔋";
-    if (strpos($name, "full") !== false)       return "🚗";
-    if (strpos($name, "air") !== false)        return "❄️";
+    if (strpos($name, "oil") !== false)        return '<i class="fa-solid fa-oil-can" aria-hidden="true"></i>';
+    if (strpos($name, "brake") !== false)      return '<i class="fa-solid fa-circle-stop" aria-hidden="true"></i>';
+    if (strpos($name, "diagnostic") !== false) return '<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>';
+    if (strpos($name, "alignment") !== false)  return '<i class="fa-solid fa-crosshairs" aria-hidden="true"></i>';
+    if (strpos($name, "battery") !== false)    return '<i class="fa-solid fa-car-battery" aria-hidden="true"></i>';
+    if (strpos($name, "full") !== false)       return '<i class="fa-solid fa-car-side" aria-hidden="true"></i>';
+    if (strpos($name, "air") !== false)        return '<i class="fa-solid fa-snowflake" aria-hidden="true"></i>';
     if (strpos($name, "tyre") !== false
-        || strpos($name, "tire") !== false)    return "🛞";
+        || strpos($name, "tire") !== false)    return '<i class="fa-solid fa-circle-dot" aria-hidden="true"></i>';
 
-    return "🔧";
+    return '<i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>';
 }
 
 ?>
@@ -154,7 +154,7 @@ function serviceIcon($name)
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MSBMS | Mechanic Service Booking & Management System</title>
-    <link rel="stylesheet" href="<?php echo $base; ?>/assets/styled.css">
+    <link rel="stylesheet" href="<?php echo $base; ?>/assets/styled.css?v=<?php echo filemtime(__DIR__ . '/assets/styled.css'); ?>">
 
 </head>
 
@@ -166,7 +166,7 @@ function serviceIcon($name)
         <div class="container nav-container">
 
             <a href="#home" class="logo">
-                <span class="logo-icon">⚒</span>
+                <span class="logo-icon"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span>
                 <span>MSBMS</span>
             </a>
 
@@ -236,7 +236,7 @@ function serviceIcon($name)
 
 
             <button class="menu-button" id="menuButton" aria-label="Toggle menu">
-                ☰
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
 
         </div>
@@ -252,7 +252,7 @@ function serviceIcon($name)
                 <div class="hero-content">
 
                     <span class="hero-label">
-                        🚗 SIMPLE • FAST • CONVENIENT
+                        <i class="fa-solid fa-car-side" aria-hidden="true"></i> SIMPLE • FAST • CONVENIENT
                     </span>
 
 
@@ -306,7 +306,7 @@ function serviceIcon($name)
                         <div class="trust-item">
 
                             <span class="trust-icon">
-                                ✓
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
                             </span>
 
                             Easy Online Booking
@@ -317,7 +317,7 @@ function serviceIcon($name)
                         <div class="trust-item">
 
                             <span class="trust-icon">
-                                ✓
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
                             </span>
 
                             Service Tracking
@@ -328,7 +328,7 @@ function serviceIcon($name)
                         <div class="trust-item">
 
                             <span class="trust-icon">
-                                ✓
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
                             </span>
 
                             Digital Service History
@@ -373,7 +373,7 @@ function serviceIcon($name)
                     <div class="hero-image-card">
 
                         <div class="card-icon">
-                            ✓
+                            <i class="fa-solid fa-check" aria-hidden="true"></i>
                         </div>
 
                         <div>
@@ -404,7 +404,7 @@ function serviceIcon($name)
                 <div class="feature-card">
 
                     <div class="feature-icon">
-                        📅
+                        <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
                     </div>
 
                     <div>
@@ -427,7 +427,7 @@ function serviceIcon($name)
                 <div class="feature-card">
 
                     <div class="feature-icon">
-                        📍
+                        <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
                     </div>
 
                     <div>
@@ -450,7 +450,7 @@ function serviceIcon($name)
                 <div class="feature-card">
 
                     <div class="feature-icon">
-                        🛡️
+                        <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
                     </div>
 
                     <div>
@@ -683,22 +683,22 @@ function serviceIcon($name)
                     <div class="about-list">
 
                         <div>
-                            <span>✓</span>
+                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
                             Online appointment scheduling
                         </div>
 
                         <div>
-                            <span>✓</span>
+                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
                             Digital vehicle service history
                         </div>
 
                         <div>
-                            <span>✓</span>
+                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
                             Service status updates
                         </div>
 
                         <div>
-                            <span>✓</span>
+                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
                             Booking notifications
                         </div>
 
@@ -770,7 +770,7 @@ function serviceIcon($name)
             <div class="footer-column">
 
                 <a href="#home" class="footer-logo">
-                    ⚒ MSBMS
+                    <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> MSBMS
                 </a>
 
                 <p>
@@ -859,15 +859,15 @@ function serviceIcon($name)
                 </h3>
 
                 <p>
-                    📧 support@msbms.com
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i> support@msbms.com
                 </p>
 
                 <p>
-                    📞 012 345 6789
+                    <i class="fa-solid fa-phone" aria-hidden="true"></i> 012 345 6789
                 </p>
 
                 <p>
-                    📍 South Africa
+                    <i class="fa-solid fa-location-dot" aria-hidden="true"></i> South Africa
                 </p>
 
             </div>

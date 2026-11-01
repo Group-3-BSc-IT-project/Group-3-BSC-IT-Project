@@ -16,13 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Create Mechanic | MSBMS</title>
-    <link rel="stylesheet" href="assets/styled.css">
+    <link rel="stylesheet" href="assets/styled.css?v=<?php echo filemtime(__DIR__ . '/assets/styled.css'); ?>">
 </head>
 <body>
 
 <div class="auth-shell">
     <div class="card auth-card wide form">
-        <div class="auth-logo"><span class="logo-mark">✦</span>MSBMS</div>
+        <div class="auth-logo"><span class="logo-mark"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span>MSBMS</div>
 
         
 

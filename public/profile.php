@@ -19,21 +19,21 @@ $user = $userController->profile();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Profile | MSBMS</title>
-    <link rel="stylesheet" href="assets/styled.css">
+    <link rel="stylesheet" href="assets/styled.css?v=<?php echo filemtime(__DIR__ . '/assets/styled.css'); ?>">
 </head>
 <body>
 <div class="app">
 
     <aside class="sidebar">
-        <div class="logo"><span class="logo-mark">✦</span> MSBMS</div>
+        <div class="logo"><span class="logo-mark"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span> MSBMS</div>
         <nav class="nav">
-            <a href="index.php"><span class="icon">🏠</span>Dashboard</a>
-            <a href="bookings.php"><span class="icon">📅</span>My Bookings</a>
-            <a href="vehicles.php"><span class="icon">🚗</span>My Vehicles</a>
-            <a href="history.php"><span class="icon">🔧</span>Service History</a>
-            <a href="notifications.php"><span class="icon">🔔</span>Notifications</a>
-            <a class="active" href="profile.php"><span class="icon">👤</span>Profile</a>
-            <a href="logout.php"><span class="icon">↪</span>Logout</a>
+            <a href="index.php"><i class="icon fa-solid fa-house" aria-hidden="true"></i>Dashboard</a>
+            <a href="bookings.php"><i class="icon fa-solid fa-calendar-days" aria-hidden="true"></i>My Bookings</a>
+            <a href="vehicles.php"><i class="icon fa-solid fa-car-side" aria-hidden="true"></i>My Vehicles</a>
+            <a href="history.php"><i class="icon fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>Service History</a>
+            <a href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications</a>
+            <a class="active" href="profile.php"><i class="icon fa-solid fa-user" aria-hidden="true"></i>Profile</a>
+            <a href="logout.php"><i class="icon fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>Logout</a>
         </nav>
     </aside>
 

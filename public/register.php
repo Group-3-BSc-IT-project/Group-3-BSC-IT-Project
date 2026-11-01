@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <a href="index.php" class="logo">
 
-                <span class="logo-icon">⚒</span>
+                <span class="logo-icon"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span>
 
                 <span>MSBMS</span>
 
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
             <button class="menu-button" id="menuButton" aria-label="Toggle menu">
-                ☰
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
 
         </div>
@@ -95,7 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="auth-shell" style="min-height:75vh">
     <div class="card auth-card wide form">
-        <div class="auth-logo"><span class="logo-mark">✦</span>MSBMS</div>
+        <div class="auth-logo"><span class="logo-mark"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span>MSBMS</div>
 
         <?php if (Session::userId()): ?>
             <p class="session-strip">
@@ -156,7 +156,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="footer-column">
 
                 <a href="index.php" class="footer-logo">
-                    ⚒ MSBMS
+                    <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> MSBMS
                 </a>
 
                 <p>
@@ -219,15 +219,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </h3>
 
                 <p>
-                    📧 support@msbms.com
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i> support@msbms.com
                 </p>
 
                 <p>
-                    📞 012 345 6789
+                    <i class="fa-solid fa-phone" aria-hidden="true"></i> 012 345 6789
                 </p>
 
                 <p>
-                    📍 South Africa
+                    <i class="fa-solid fa-location-dot" aria-hidden="true"></i> South Africa
                 </p>
 
             </div>
