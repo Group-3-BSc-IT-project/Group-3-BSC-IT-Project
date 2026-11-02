@@ -1,10 +1,56 @@
 <?php
 require_once __DIR__ . '/_init.php';
+Auth::requireLogin();
 
-// ---- Logic ----
-Auth::requireAnyRole(['customer', 'admin']);
+$role = strtolower((string)Session::role());
+if (!in_array($role, ['admin', 'mechanic', 'customer'], true)) {
+    header('Location: login.php');
+    exit;
+}
+$isAdmin       = ($role === 'admin');
+$isMechanic    = ($role === 'mechanic');
+$isCustomer    = ($role === 'customer');
+$dashboardLink = $isAdmin ? 'admin.php' : ($isMechanic ? 'mechanic.php' : 'customer.php');
 
-$repairs = $repairController->all();
+// ---- Load the records each role is allowed to see ----
+$setupNote = '';
+if ($isAdmin) {
+    // Admin: every repair record
+    $repairs = $repairController->all();
+} elseif ($isMechanic) {
+    // Mechanic: only the repairs they carried out
+    if (method_exists($repairController, 'forMechanic')) {
+        $repairs = $repairController->forMechanic((int)Session::userId());
+    } else {
+        $repairs = array_values(array_filter(
+            $repairController->all(),
+            fn($r) => (int)$r['mechanic_id'] === (int)Session::userId()
+        ));
+    }
+} else {
+    // Customer: only repairs on their own vehicles (fails closed if the method is missing)
+    if (method_exists($repairController, 'forCustomer')) {
+        $repairs = $repairController->forCustomer((int)Session::userId());
+    } else {
+        $repairs = [];
+        $setupNote = 'Customer history is not set up yet: add forCustomer() to the repair controller.';
+    }
+}
+
+// Page wording per role
+if ($isCustomer) {
+    $pageTitle    = 'Service History';
+    $pageSubtitle = 'Past services and repairs on your vehicles';
+    $tableTitle   = 'Your Services';
+} elseif ($isMechanic) {
+    $pageTitle    = 'Repair History';
+    $pageSubtitle = 'Cars you have repaired';
+    $tableTitle   = 'Your Repairs';
+} else {
+    $pageTitle    = 'Service History';
+    $pageSubtitle = 'All repair records across every booking';
+    $tableTitle   = 'Repairs';
+}
 
 // Map repair status to a badge style class defined in styled.css
 function repairStatusBadgeClass($status) {
@@ -12,22 +58,22 @@ function repairStatusBadgeClass($status) {
         case 'Completed':
             return 'badge'; // default badge is green
         case 'In Progress':
-            return 'badge yellow';
         case 'Pending':
-            return 'badge yellow';
         case 'Canceled':
             return 'badge yellow';
         default:
             return 'badge blue';
     }
 }
+
+$colCount = $isAdmin ? 9 : ($isMechanic ? 7 : 6);
 ?>
 <!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <title>Service History | MSBMS</title>
+    <title><?= e($pageTitle) ?> | MSBMS</title>
     <link rel="stylesheet" href="assets/styled.css?v=<?php echo filemtime(__DIR__ . '/assets/styled.css'); ?>">
 </head>
 <body>
@@ -36,13 +82,26 @@ function repairStatusBadgeClass($status) {
     <aside class="sidebar">
         <div class="logo"><span class="logo-mark"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span> MSBMS</div>
         <nav class="nav">
-            <a href="admin.php"><i class="icon fa-solid fa-house" aria-hidden="true"></i>Dashboard</a>
-            <a href="mechanic_create.php"><i class="icon fa-solid fa-user-gear" aria-hidden="true"></i>Create Mechanic</a>
-            <a href="vehicle_create.php"><i class="icon fa-solid fa-circle-plus" aria-hidden="true"></i>Add Vehicle</a>
-            <a href="vehicles.php"><i class="icon fa-solid fa-car-side" aria-hidden="true"></i>Vehicles</a>
-            <a href="services.php"><i class="icon fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>Services</a>
-            <a class="active" href="service_history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
-            <a href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications</a>
+            <a href="<?= e($dashboardLink) ?>"><i class="icon fa-solid fa-house" aria-hidden="true"></i>Dashboard</a>
+            <?php if ($isCustomer): ?>
+                <a href="booking_create.php"><i class="icon fa-solid fa-calendar-days" aria-hidden="true"></i>Create Booking</a>
+                <a href="vehicles.php"><i class="icon fa-solid fa-car-side" aria-hidden="true"></i>My Vehicles</a>
+                <a href="vehicle_create.php"><i class="icon fa-solid fa-circle-plus" aria-hidden="true"></i>Add Vehicle</a>
+                <a href="services.php"><i class="icon fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>Services</a>
+                <a class="active" href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
+            <?php elseif ($isAdmin): ?>
+                <a href="mechanic_create.php"><i class="icon fa-solid fa-user-gear" aria-hidden="true"></i>Create Mechanic</a>
+                <a href="vehicle_create.php"><i class="icon fa-solid fa-circle-plus" aria-hidden="true"></i>Add Vehicle</a>
+                <a href="vehicles.php"><i class="icon fa-solid fa-car-side" aria-hidden="true"></i>Vehicles</a>
+                <a href="services.php"><i class="icon fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>Services</a>
+               
+                <a class="active" href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
+            <?php elseif ($isMechanic): ?>
+                
+                <a class="active" href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>service History</a>
+            <?php endif; ?>
+            <a href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications<?php $unread = $notificationController->unread(); if ($unread): ?> (<?= (int)$unread ?>)<?php endif; ?></a>
+            <a href="profile.php"><i class="icon fa-solid fa-user" aria-hidden="true"></i>Profile</a>
             <?php if (Session::userId()): ?>
                 <a href="logout.php"><i class="icon fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>Logout</a>
             <?php endif; ?>
@@ -52,8 +111,8 @@ function repairStatusBadgeClass($status) {
     <main class="main">
         <div class="topbar">
             <div class="title">
-                <h1>Service History</h1>
-                <p>All repair records across every booking</p>
+                <h1><?= e($pageTitle) ?></h1>
+                <p><?= e($pageSubtitle) ?></p>
             </div>
             <?php if (Session::userId()): ?>
                 <div class="user">
@@ -64,45 +123,104 @@ function repairStatusBadgeClass($status) {
         </div>
 
         <div class="card section">
-            <h2>Repairs</h2>
+            <h2><?= e($tableTitle) ?></h2>
+            <?php if ($setupNote): ?>
+                <p class="badge yellow"><?= e($setupNote) ?></p>
+            <?php endif; ?>
             <div class="table-card">
                 <table class="table">
-                    <tr>
-                        <th>Repair ID</th>
-                        <th>Booking ID</th>
-                        <th>Mechanic ID</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Cost</th>
-                        <th>Repair Date</th>
-                        <th>Created At</th>
-                        <th>Action</th>
-                    </tr>
-                    <?php foreach ($repairs as $r): ?>
+                    <?php if ($isAdmin): ?>
                         <tr>
-                            <td><?= e($r['repair_id']) ?></td>
-                            <td><?= e($r['booking_id']) ?></td>
-                            <td><?= e($r['mechanic_id']) ?></td>
-                            <td><?= e($r['description']) ?></td>
-                            <td><span class="<?= repairStatusBadgeClass($r['status']) ?>"><?= e($r['status']) ?></span></td>
-                            <td><?= $r['cost'] !== null ? 'R' . number_format((float)$r['cost'], 2) : '—' ?></td>
-                            <td><?= e($r['repair_date'] ?? 'NULL') ?></td>
-                            <td><?= e($r['created_at']) ?></td>
-                            <td>
-                                <div class="actions">
-                                    <a class="small-btn" href="repair_edit.php?repair_id=<?= $r['repair_id'] ?>" title="Edit"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></a>
-                                    <a class="small-btn" href="repair_copy.php?repair_id=<?= $r['repair_id'] ?>" title="Copy"><i class="fa-solid fa-copy" aria-hidden="true"></i></a>
-                                    <form method="post" action="repair_delete.php" onsubmit="return confirm('Delete this repair record?');" style="display:inline">
-                                        <input type="hidden" name="repair_id" value="<?= e($r['repair_id']) ?>">
-                                        <button type="submit" class="small-btn" title="Delete"><i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>
-                                    </form>
-                                </div>
-                            </td>
+                            <th>Repair ID</th>
+                            <th>Booking ID</th>
+                            <th>Mechanic ID</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Cost</th>
+                            <th>Repair Date</th>
+                            <th>Created At</th>
+                            <th>Action</th>
                         </tr>
+                    <?php elseif ($isMechanic): ?>
+                        <tr>
+                            <th>Repair ID</th>
+                            <th>Vehicle</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Cost</th>
+                            <th>Repair Date</th>
+                            <th>Action</th>
+                        </tr>
+                    <?php else: ?>
+                        <tr>
+                            <th>Date</th>
+                            <th>Vehicle</th>
+                            <th>Service</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Cost</th>
+                        </tr>
+                    <?php endif; ?>
+
+                    <?php foreach ($repairs as $r): ?>
+                        <?php
+                        $vehicle = $r['registration_number'] ?? '—';
+                        $date    = $r['repair_date'] ?? ($r['created_at'] ?? '—');
+                        $cost    = ($r['cost'] ?? null) !== null ? 'R' . number_format((float)$r['cost'], 2) : '—';
+                        ?>
+                        <?php if ($isAdmin): ?>
+                            <tr>
+                                <td><?= e($r['repair_id']) ?></td>
+                                <td><?= e($r['booking_id']) ?></td>
+                                <td><?= e($r['mechanic_id']) ?></td>
+                                <td><?= e($r['description']) ?></td>
+                                <td><span class="<?= repairStatusBadgeClass($r['status']) ?>"><?= e($r['status']) ?></span></td>
+                                <td><?= $cost ?></td>
+                                <td><?= e($r['repair_date'] ?? 'NULL') ?></td>
+                                <td><?= e($r['created_at']) ?></td>
+                                <td>
+                                    <div class="actions">
+                                        <a class="small-btn" href="repair_edit.php?repair_id=<?= e($r['repair_id']) ?>" title="Edit"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></a>
+                                        <a class="small-btn" href="repair_copy.php?repair_id=<?= e($r['repair_id']) ?>" title="Copy"><i class="fa-solid fa-copy" aria-hidden="true"></i></a>
+                                        <form method="post" action="repair_delete.php" onsubmit="return confirm('Delete this repair record?');" style="display:inline">
+                                            <input type="hidden" name="repair_id" value="<?= e($r['repair_id']) ?>">
+                                            <button type="submit" class="small-btn" title="Delete"><i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php elseif ($isMechanic): ?>
+                            <tr>
+                                <td><?= e($r['repair_id']) ?></td>
+                                <td><?= e($vehicle) ?></td>
+                                <td><?= e($r['description']) ?></td>
+                                <td><span class="<?= repairStatusBadgeClass($r['status']) ?>"><?= e($r['status']) ?></span></td>
+                                <td><?= $cost ?></td>
+                                <td><?= e($date) ?></td>
+                                <td>
+                                    <div class="actions">
+                                        <a class="small-btn" href="repair_edit.php?repair_id=<?= e($r['repair_id']) ?>" title="Edit"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></a>
+                                        <a class="small-btn" href="repair_copy.php?repair_id=<?= e($r['repair_id']) ?>" title="Copy"><i class="fa-solid fa-copy" aria-hidden="true"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <?php else: ?>
+                            <tr>
+                                <td><?= e($date) ?></td>
+                                <td><?= e($vehicle) ?></td>
+                                <td><?= e($r['service_name'] ?? '—') ?></td>
+                                <td><?= e($r['description']) ?></td>
+                                <td><span class="<?= repairStatusBadgeClass($r['status']) ?>"><?= e($r['status']) ?></span></td>
+                                <td><?= $cost ?></td>
+                            </tr>
+                        <?php endif; ?>
                     <?php endforeach; ?>
+
                     <?php if (empty($repairs)): ?>
                         <tr>
-                            <td colspan="9" style="text-align:center;color:var(--muted)">No service history yet.</td>
+                            <td colspan="<?= $colCount ?>" style="text-align:center;color:var(--muted)">
+                                <?= $isMechanic ? 'No repairs recorded yet.' : 'No service history yet.' ?>
+                            </td>
                         </tr>
                     <?php endif; ?>
                 </table>

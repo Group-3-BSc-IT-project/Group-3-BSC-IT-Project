@@ -39,8 +39,9 @@ function mechanicStatusBadgeClass($status) {
         <div class="logo"><span class="logo-mark"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span> MSBMS</div>
         <nav class="nav">
             <a class="active" href="mechanic.php"><i class="icon fa-solid fa-house" aria-hidden="true"></i>Dashboard</a>
-            <a href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications<?php if ($unread): ?> (<?= e($unread) ?>)<?php endif; ?></a>
-            <a href="quotes.php"><i class="icon fa-solid fa-comments" aria-hidden="true"></i>Quote Requests</a>
+            <a href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
+                        <a href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications<?php if ($unread): ?> (<?= e($unread) ?>)<?php endif; ?></a>
+
             <a href="profile.php"><i class="icon fa-solid fa-user" aria-hidden="true"></i>Profile</a>
             <?php if (Session::userId()): ?>
                 <a href="logout.php"><i class="icon fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>Logout</a>

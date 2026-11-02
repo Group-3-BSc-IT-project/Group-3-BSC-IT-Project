@@ -71,12 +71,13 @@ foreach ($notifications as $n) {
                 <a href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
             <?php elseif ($role === 'admin'): ?>
                 <a href="mechanic_create.php"><i class="icon fa-solid fa-user-gear" aria-hidden="true"></i>Create Mechanic</a>
+                <a href="vehicle_create.php"><i class="icon fa-solid fa-circle-plus" aria-hidden="true"></i>Add Vehicle</a>
                 <a href="vehicles.php"><i class="icon fa-solid fa-car-side" aria-hidden="true"></i>Vehicles</a>
                 <a href="services.php"><i class="icon fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>Services</a>
                 <a href="quotes.php"><i class="icon fa-solid fa-comments" aria-hidden="true"></i>Quote Requests</a>
                 <a href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
             <?php elseif ($role === 'mechanic'): ?>
-                <a href="quotes.php"><i class="icon fa-solid fa-comments" aria-hidden="true"></i>Quote Requests</a>
+                <a href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
             <?php endif; ?>
             <a class="active" href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications<?php if ($unreadCount): ?> (<?= (int)$unreadCount ?>)<?php endif; ?></a>
             <a href="profile.php"><i class="icon fa-solid fa-user" aria-hidden="true"></i>Profile</a>
