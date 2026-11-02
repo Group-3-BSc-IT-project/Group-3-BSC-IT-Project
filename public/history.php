@@ -28,13 +28,8 @@ if ($isAdmin) {
         ));
     }
 } else {
-    // Customer: only repairs on their own vehicles (fails closed if the method is missing)
-    if (method_exists($repairController, 'forCustomer')) {
-        $repairs = $repairController->forCustomer((int)Session::userId());
-    } else {
-        $repairs = [];
-        $setupNote = 'Customer history is not set up yet: add forCustomer() to the repair controller.';
-    }
+    // Customer: show completed bookings for their own vehicles.
+    $repairs = $bookingController->completedForCustomer();
 }
 
 // Page wording per role
@@ -66,7 +61,7 @@ function repairStatusBadgeClass($status) {
     }
 }
 
-$colCount = $isAdmin ? 9 : 6;
+$colCount = $isAdmin ? 8 : 6;
 ?>
 <!doctype html>
 <html lang="en">
@@ -139,7 +134,6 @@ $colCount = $isAdmin ? 9 : 6;
                             <th>Cost</th>
                             <th>Repair Date</th>
                             <th>Created At</th>
-                            <th>Action</th>
                         </tr>
                     <?php elseif ($isMechanic): ?>
                         <tr>
@@ -177,16 +171,6 @@ $colCount = $isAdmin ? 9 : 6;
                                 <td><?= $cost ?></td>
                                 <td><?= e($r['repair_date'] ?? 'NULL') ?></td>
                                 <td><?= e($r['created_at']) ?></td>
-                                <td>
-                                    <div class="actions">
-                                        <a class="small-btn" href="repair_edit.php?repair_id=<?= e($r['repair_id']) ?>" title="Edit"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></a>
-                                        <a class="small-btn" href="repair_copy.php?repair_id=<?= e($r['repair_id']) ?>" title="Copy"><i class="fa-solid fa-copy" aria-hidden="true"></i></a>
-                                        <form method="post" action="repair_delete.php" onsubmit="return confirm('Delete this repair record?');" style="display:inline">
-                                            <input type="hidden" name="repair_id" value="<?= e($r['repair_id']) ?>">
-                                            <button type="submit" class="small-btn" title="Delete"><i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>
-                                        </form>
-                                    </div>
-                                </td>
                             </tr>
                         <?php elseif ($isMechanic): ?>
                             <tr>

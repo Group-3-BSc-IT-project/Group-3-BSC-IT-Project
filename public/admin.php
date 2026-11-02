@@ -5,7 +5,7 @@ require_once __DIR__ . '/_init.php';
 Auth::requireRole('admin');
 
 $stats    = $adminController->stats();
-$bookings = $bookingController->all();
+$bookings = $bookingController->adminDashboardBookings();
 
 // Map booking status to a badge style class defined in style.css
 function statusBadgeClass($status) {

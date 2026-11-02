@@ -70,9 +70,19 @@ class BookingController
         return $this->bookings->findForCustomer(Session::userId());
     }
 
+    public function completedForCustomer(): array
+    {
+        return $this->bookings->completedForCustomer((int)Session::userId());
+    }
+
     public function mechanicBookings(): array
     {
-        return $this->bookings->forMechanic(Session::userId());
+        return $this->bookings->forMechanicDashboard((int)Session::userId());
+    }
+
+    public function adminDashboardBookings(): array
+    {
+        return $this->bookings->forAdminDashboard();
     }
 
     public function all(): array

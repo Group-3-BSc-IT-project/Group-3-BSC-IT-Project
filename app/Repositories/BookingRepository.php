@@ -28,14 +28,36 @@ class BookingRepository
 
     public function findForCustomer(int $id): array
     {
-        $s = $this->db->prepare("SELECT b.*,v.registration_number,v.make,v.model,s.service_name,s.price,m.full_name mechanic_name FROM bookings b JOIN vehicles v ON b.vehicle_id=v.vehicle_id JOIN services s ON b.service_id=s.service_id LEFT JOIN users m ON b.mechanic_id=m.user_id WHERE b.customer_id=? ORDER BY b.booking_date DESC,b.booking_time DESC");
+        $s = $this->db->prepare("SELECT b.*,v.registration_number,v.make,v.model,s.service_name,s.price,m.full_name mechanic_name FROM bookings b JOIN vehicles v ON b.vehicle_id=v.vehicle_id JOIN services s ON b.service_id=s.service_id LEFT JOIN users m ON b.mechanic_id=m.user_id WHERE b.customer_id=? AND b.status <> 'Completed' ORDER BY b.booking_date DESC,b.booking_time DESC");
         $s->execute([$id]);
         return $s->fetchAll();
+    }
+
+    public function completedForCustomer(int $customerId): array
+    {
+        $s = $this->db->prepare("SELECT b.booking_id, COALESCE(DATE_FORMAT(b.completed_at, '%Y-%m-%d'), b.booking_date) AS repair_date,
+                v.registration_number, v.make, v.model,
+                COALESCE(NULLIF(b.custom_service, ''), s.service_name) AS service_name,
+                COALESCE((SELECT GROUP_CONCAT(r.description ORDER BY r.created_at SEPARATOR '; ')
+                    FROM repairs r WHERE r.booking_id=b.booking_id), 'Service completed') AS description,
+                b.status, COALESCE(b.final_price, (SELECT SUM(r.cost) FROM repairs r WHERE r.booking_id=b.booking_id)) AS cost
+            FROM bookings b
+            JOIN vehicles v ON b.vehicle_id=v.vehicle_id
+            JOIN services s ON b.service_id=s.service_id
+            WHERE b.customer_id=? AND b.status='Completed'
+            ORDER BY b.completed_at DESC, b.booking_date DESC, b.booking_time DESC");
+        $s->execute([$customerId]);
+        return $s->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function findAll(): array
     {
         return $this->db->query("SELECT b.*,c.full_name customer_name,v.registration_number,v.make,v.model,s.service_name,m.full_name mechanic_name FROM bookings b JOIN users c ON b.customer_id=c.user_id JOIN vehicles v ON b.vehicle_id=v.vehicle_id JOIN services s ON b.service_id=s.service_id LEFT JOIN users m ON b.mechanic_id=m.user_id ORDER BY b.booking_date DESC,b.booking_time DESC")->fetchAll();
+    }
+
+    public function forAdminDashboard(): array
+    {
+        return $this->db->query("SELECT b.*,c.full_name customer_name,v.registration_number,v.make,v.model,s.service_name,m.full_name mechanic_name FROM bookings b JOIN users c ON b.customer_id=c.user_id JOIN vehicles v ON b.vehicle_id=v.vehicle_id JOIN services s ON b.service_id=s.service_id LEFT JOIN users m ON b.mechanic_id=m.user_id WHERE b.status <> 'Completed' ORDER BY b.booking_date DESC,b.booking_time DESC")->fetchAll();
     }
 
     public function find(int $id): ?array
@@ -69,6 +91,13 @@ class BookingRepository
     public function forMechanic(int $id): array
     {
         $s = $this->db->prepare("SELECT b.*,c.full_name customer_name,v.registration_number,v.make,v.model,s.service_name,s.price FROM bookings b JOIN users c ON b.customer_id=c.user_id JOIN vehicles v ON b.vehicle_id=v.vehicle_id JOIN services s ON b.service_id=s.service_id WHERE b.mechanic_id=? ORDER BY b.booking_date,b.booking_time");
+        $s->execute([$id]);
+        return $s->fetchAll();
+    }
+
+    public function forMechanicDashboard(int $id): array
+    {
+        $s = $this->db->prepare("SELECT b.*,c.full_name customer_name,v.registration_number,v.make,v.model,s.service_name,s.price FROM bookings b JOIN users c ON b.customer_id=c.user_id JOIN vehicles v ON b.vehicle_id=v.vehicle_id JOIN services s ON b.service_id=s.service_id WHERE b.mechanic_id=? AND b.status <> 'Completed' ORDER BY b.booking_date,b.booking_time");
         $s->execute([$id]);
         return $s->fetchAll();
     }
@@ -160,9 +189,28 @@ class BookingRepository
 
     public function completeWithPrice(int $id, int $mechanicId, float $price): bool
     {
-        $s = $this->db->prepare("UPDATE bookings SET status='Completed', final_price=?, completed_at=NOW() WHERE booking_id=? AND mechanic_id=? AND status NOT IN ('Completed','Canceled')");
-        $s->execute([$price, $id, $mechanicId]);
-        return $s->rowCount() > 0;
+        $this->db->beginTransaction();
+
+        try {
+            $booking = $this->db->prepare("UPDATE bookings SET status='Completed', final_price=?, completed_at=NOW() WHERE booking_id=? AND mechanic_id=? AND status NOT IN ('Completed','Canceled')");
+            $booking->execute([$price, $id, $mechanicId]);
+
+            if ($booking->rowCount() === 0) {
+                $this->db->rollBack();
+                return false;
+            }
+
+            $repairs = $this->db->prepare("UPDATE repairs SET status='Completed' WHERE booking_id=? AND status <> 'Completed'");
+            $repairs->execute([$id]);
+
+            $this->db->commit();
+            return true;
+        } catch (Throwable $e) {
+            if ($this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            throw $e;
+        }
     }
 
     // ---- Notifications and email data ----

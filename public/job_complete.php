@@ -5,6 +5,7 @@ Auth::requireRole('mechanic');
 
 $bookingId = (int)($_GET['booking_id'] ?? $_POST['booking_id'] ?? 0);
 $job       = $bookingController->jobForMechanic($bookingId);
+$unread    = $notificationController->unread();
 $message   = '';
 
 if (!$job) {
@@ -34,19 +35,19 @@ $suggested   = $repairTotal > 0
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Complete Job | MSBMS</title>
-    <link rel="stylesheet" href="assets/styled.css">
+    <link rel="stylesheet" href="assets/styled.css?v=<?php echo filemtime(__DIR__ . '/assets/styled.css'); ?>">
 </head>
 <body>
 <div class="app">
 
     <aside class="sidebar">
-        <div class="logo"><span class="logo-mark">✦</span> MSBMS</div>
+        <div class="logo"><span class="logo-mark"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span> MSBMS</div>
         <nav class="nav">
-            <a href="mechanic.php"><span class="icon">🏠</span>Dashboard</a>
-            <a href="notifications.php"><span class="icon">🔔</span>Notifications</a>
-            <a href="quotes.php"><span class="icon">💬</span>Quote Requests</a>
-            <a href="profile.php"><span class="icon">⚙️</span>Profile Settings</a>
-            <a href="logout.php"><span class="icon">↪</span>Logout</a>
+            <a href="mechanic.php"><i class="icon fa-solid fa-house" aria-hidden="true"></i>Dashboard</a>
+            <a href="history.php"><i class="icon fa-solid fa-clipboard-list" aria-hidden="true"></i>Service History</a>
+            <a href="notifications.php"><i class="icon fa-solid fa-bell" aria-hidden="true"></i>Notifications<?php if ($unread): ?> (<?= e($unread) ?>)<?php endif; ?></a>
+            <a href="profile.php"><i class="icon fa-solid fa-user" aria-hidden="true"></i>Profile</a>
+            <a href="logout.php"><i class="icon fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i>Logout</a>
         </nav>
     </aside>
 
