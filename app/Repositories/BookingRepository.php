@@ -51,9 +51,27 @@ class BookingRepository
     }
 
     public function findAll(): array
-    {
-        return $this->db->query("SELECT b.*,c.full_name customer_name,v.registration_number,v.make,v.model,s.service_name,m.full_name mechanic_name FROM bookings b JOIN users c ON b.customer_id=c.user_id JOIN vehicles v ON b.vehicle_id=v.vehicle_id JOIN services s ON b.service_id=s.service_id LEFT JOIN users m ON b.mechanic_id=m.user_id ORDER BY b.booking_date DESC,b.booking_time DESC")->fetchAll();
-    }
+{
+    return $this->db->query("
+        SELECT
+            b.*,
+            c.full_name AS customer_name,
+            v.registration_number,
+            v.make,
+            v.model,
+            s.service_name,
+            m.full_name AS mechanic_name
+        FROM bookings b
+        JOIN users c ON b.customer_id = c.user_id
+        JOIN vehicles v ON b.vehicle_id = v.vehicle_id
+        JOIN services s ON b.service_id = s.service_id
+        LEFT JOIN users m ON b.mechanic_id = m.user_id
+        ORDER BY
+            b.booking_date DESC,
+            b.booking_time DESC,
+            b.booking_id DESC
+    ")->fetchAll();
+}
 
     public function forAdminDashboard(): array
     {

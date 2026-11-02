@@ -3,16 +3,12 @@
 session_start();
 
 foreach (["config.php", "database.php"] as $configFile) {
-
     if (file_exists(__DIR__ . "/../config/" . $configFile)) {
         require_once __DIR__ . "/../config/" . $configFile;
     }
-
 }
 
-
 try {
-
     $pdo = new PDO(
         "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4",
         DB_USER,
@@ -25,12 +21,10 @@ try {
     );
 
 } catch (PDOException $e) {
-
     die("Database connection error: " . $e->getMessage());
-
 }
 
-$base = defined("BASE_URL") ? BASE_URL : "/MSBMS_OOP/public";
+$base = defined("BASE_URL") ? BASE_URL : "MSBMS_OOP/public";
 
 $isLoggedIn = isset($_SESSION["user_id"]);
 
@@ -38,86 +32,63 @@ $role      = $isLoggedIn ? ($_SESSION["role"] ?? "") : "";
 $full_name = $isLoggedIn ? ($_SESSION["full_name"] ?? "") : "";
 $firstName = $full_name !== "" ? explode(" ", $full_name)[0] : "";
 
-
 $dashboardLink = $base . "/login.php";
 
 if ($role === "customer") {
-
     $dashboardLink = $base . "/bookings/customer-dashboard.php";
-
 } elseif ($role === "mechanic") {
-
     $dashboardLink = $base . "/mechanics/dashboard.php";
-
 } elseif ($role === "admin") {
-
     $dashboardLink = $base . "/admin/dashboard.php";
-
 }
 
-
-
 if (!$isLoggedIn) {
-
     $bookLink = $base . "/login.php";
-
 } elseif ($role === "customer") {
-
     $bookLink = $base . "/booking_create.php";
-
 } else {
-
     $bookLink = $dashboardLink;
-
 }
 
 
 /*
 |--------------------------------------------------------------------------
-| Unread notifications (logged in users only)
+| Unread notifications
 |--------------------------------------------------------------------------
 */
 
 $unreadCount = 0;
 
 if ($isLoggedIn) {
-
     $countStmt = $pdo->prepare("
         SELECT COUNT(*) AS unread_count
-
         FROM notifications
-
         WHERE user_id = ?
-
         AND is_read = 0
     ");
 
     $countStmt->execute([$_SESSION["user_id"]]);
 
-    $unreadCount =
-        $countStmt->fetch()["unread_count"];
-
+    $unreadCount = $countStmt->fetch()["unread_count"];
 }
 
 
 /*
 |--------------------------------------------------------------------------
-| Services from the database
+| Services from database
 |--------------------------------------------------------------------------
 */
 
 $services = $pdo->query("
     SELECT service_id, service_name, description, price
-
     FROM services
-
     ORDER BY service_id ASC
 ")->fetchAll();
 
 
 /*
 |--------------------------------------------------------------------------
-| Pick an icon based on the service name
+| Service icons
 |--------------------------------------------------------------------------
 */
 
@@ -125,28 +96,72 @@ function serviceIcon($name)
 {
     $name = strtolower($name);
 
-    if (strpos($name, "oil") !== false)        return '<i class="fa-solid fa-oil-can" aria-hidden="true"></i>';
-    if (strpos($name, "brake") !== false)      return '<i class="fa-solid fa-circle-stop" aria-hidden="true"></i>';
-    if (strpos($name, "diagnostic") !== false) return '<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>';
-    if (strpos($name, "alignment") !== false)  return '<i class="fa-solid fa-crosshairs" aria-hidden="true"></i>';
-    if (strpos($name, "battery") !== false)    return '<i class="fa-solid fa-car-battery" aria-hidden="true"></i>';
-    if (strpos($name, "full") !== false)       return '<i class="fa-solid fa-car-side" aria-hidden="true"></i>';
-    if (strpos($name, "air") !== false)        return '<i class="fa-solid fa-snowflake" aria-hidden="true"></i>';
-    if (strpos($name, "tyre") !== false
-        || strpos($name, "tire") !== false)    return '<i class="fa-solid fa-circle-dot" aria-hidden="true"></i>';
+    if (strpos($name, "oil") !== false) {
+        return '<i class="fa-solid fa-oil-can" aria-hidden="true"></i>';
+    }
+
+    if (strpos($name, "brake") !== false) {
+        return '<i class="fa-solid fa-circle-stop" aria-hidden="true"></i>';
+    }
+
+    if (strpos($name, "diagnostic") !== false) {
+        return '<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>';
+    }
+
+    if (strpos($name, "alignment") !== false) {
+        return '<i class="fa-solid fa-crosshairs" aria-hidden="true"></i>';
+    }
+
+    if (strpos($name, "battery") !== false) {
+        return '<i class="fa-solid fa-car-battery" aria-hidden="true"></i>';
+    }
+
+    if (strpos($name, "full") !== false) {
+        return '<i class="fa-solid fa-car-side" aria-hidden="true"></i>';
+    }
+
+    if (strpos($name, "air") !== false) {
+        return '<i class="fa-solid fa-snowflake" aria-hidden="true"></i>';
+    }
+
+    if (
+        strpos($name, "tyre") !== false ||
+        strpos($name, "tire") !== false
+    ) {
+        return '<i class="fa-solid fa-circle-dot" aria-hidden="true"></i>';
+    }
 
     return '<i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>';
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| CSS connection
+|--------------------------------------------------------------------------
+*/
+
+$cssFile = __DIR__ . DIRECTORY_SEPARATOR . "assets" . DIRECTORY_SEPARATOR . "styled.css";
+
+$cssUrl = rtrim($base, "/") . "/assets/styled.css";
+
+$cssVersion = file_exists($cssFile) ? filemtime($cssFile) : time();
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>MSBMS | Mechanic Service Booking & Management System</title>
-    <link rel="stylesheet" href="<?php echo $base; ?>/assets/styled.css?v=<?php echo filemtime(__DIR__ . '/assets/styled.css'); ?>">
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="/MSBMS_OOP/public/assets/styled.css">
 
 </head>
 
@@ -158,8 +173,13 @@ function serviceIcon($name)
         <div class="container nav-container">
 
             <a href="#home" class="logo">
-                <span class="logo-icon"><i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i></span>
+
+                <span class="logo-icon">
+                    <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
+                </span>
+
                 <span>MSBMS</span>
+
             </a>
 
 
@@ -188,7 +208,11 @@ function serviceIcon($name)
                             Hi, <strong><?php echo htmlspecialchars($firstName); ?></strong>
                         </span>
 
-                        <a href="<?php echo $base; ?>/notifications/list.php" class="btn btn-login">
+
+                        <a
+                            href="<?php echo $base; ?>/notifications.php"
+                            class="btn btn-login"
+                        >
 
                             Notifications
 
@@ -203,17 +227,28 @@ function serviceIcon($name)
                         </a>
 
 
-                        <a href="<?php echo $base; ?>/logout.php" class="btn btn-signup">
+                        <a
+                            href="<?php echo $base; ?>/logout.php"
+                            class="btn btn-signup"
+                        >
                             Logout
                         </a>
 
+
                     <?php else: ?>
 
-                        <a href="<?php echo $base; ?>/login.php" class="btn btn-login">
+                        <a
+                            href="<?php echo $base; ?>/login.php"
+                            class="btn btn-login"
+                        >
                             Login
                         </a>
 
-                        <a href="<?php echo $base; ?>/register.php" class="btn btn-signup">
+
+                        <a
+                            href="<?php echo $base; ?>/register.php"
+                            class="btn btn-signup"
+                        >
                             Sign Up
                         </a>
 
@@ -224,7 +259,11 @@ function serviceIcon($name)
             </div>
 
 
-            <button class="menu-button" id="menuButton" aria-label="Toggle menu">
+            <button
+                class="menu-button"
+                id="menuButton"
+                aria-label="Toggle menu"
+            >
                 <i class="fa-solid fa-bars" aria-hidden="true"></i>
             </button>
 
@@ -232,7 +271,11 @@ function serviceIcon($name)
 
     </header>
 
+
     <main>
+
+
+        <!-- HERO SECTION -->
 
         <section class="hero" id="home">
 
@@ -241,7 +284,11 @@ function serviceIcon($name)
                 <div class="hero-content">
 
                     <span class="hero-label">
-                        <i class="fa-solid fa-car-side" aria-hidden="true"></i> SIMPLE • FAST • CONVENIENT
+
+                        <i class="fa-solid fa-car-side" aria-hidden="true"></i>
+
+                        SIMPLE • FAST • CONVENIENT
+
                     </span>
 
 
@@ -270,8 +317,10 @@ function serviceIcon($name)
 
                     <div class="hero-buttons">
 
-                        <a href="<?php echo htmlspecialchars($bookLink); ?>"
-                           class="btn btn-primary">
+                        <a
+                            href="<?php echo htmlspecialchars($bookLink); ?>"
+                            class="btn btn-primary"
+                        >
 
                             Book a Service
 
@@ -280,8 +329,10 @@ function serviceIcon($name)
                         </a>
 
 
-                        <a href="#how-it-works"
-                           class="btn btn-secondary">
+                        <a
+                            href="#how-it-works"
+                            class="btn btn-secondary"
+                        >
 
                             Learn More
 
@@ -328,6 +379,7 @@ function serviceIcon($name)
 
                 </div>
 
+
                 <div class="hero-image">
 
                     <div class="garage-background"></div>
@@ -365,6 +417,7 @@ function serviceIcon($name)
                             <i class="fa-solid fa-check" aria-hidden="true"></i>
                         </div>
 
+
                         <div>
 
                             <strong>
@@ -385,6 +438,10 @@ function serviceIcon($name)
 
         </section>
 
+
+
+        <!-- FEATURES SECTION -->
+
         <section class="features">
 
             <div class="container features-grid">
@@ -395,6 +452,7 @@ function serviceIcon($name)
                     <div class="feature-icon">
                         <i class="fa-solid fa-calendar-days" aria-hidden="true"></i>
                     </div>
+
 
                     <div>
 
@@ -419,6 +477,7 @@ function serviceIcon($name)
                         <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
                     </div>
 
+
                     <div>
 
                         <h3>
@@ -442,6 +501,7 @@ function serviceIcon($name)
                         <i class="fa-solid fa-shield-halved" aria-hidden="true"></i>
                     </div>
 
+
                     <div>
 
                         <h3>
@@ -457,9 +517,14 @@ function serviceIcon($name)
 
                 </div>
 
+
             </div>
 
         </section>
+
+
+
+        <!-- SERVICES SECTION -->
 
         <section class="services" id="services">
 
@@ -472,9 +537,11 @@ function serviceIcon($name)
                         OUR SERVICES
                     </span>
 
+
                     <h2>
                         Vehicle Services Made Simple
                     </h2>
+
 
                     <p>
                         Select the service your vehicle needs
@@ -495,20 +562,28 @@ function serviceIcon($name)
                             <div class="service-card">
 
                                 <div class="service-icon">
+
                                     <?php echo serviceIcon($service["service_name"]); ?>
+
                                 </div>
+
 
                                 <h3>
                                     <?php echo htmlspecialchars($service["service_name"]); ?>
                                 </h3>
 
+
                                 <p>
                                     <?php echo htmlspecialchars($service["description"] ?? ""); ?>
                                 </p>
 
+
                                 <div class="service-price">
+
                                     From R<?php echo number_format($service["price"], 2); ?>
+
                                 </div>
+
 
                                 <a href="<?php echo htmlspecialchars($bookLink); ?>">
                                     Book Service →
@@ -517,6 +592,7 @@ function serviceIcon($name)
                             </div>
 
                         <?php endforeach; ?>
+
 
                     <?php else: ?>
 
@@ -532,6 +608,10 @@ function serviceIcon($name)
 
         </section>
 
+
+
+        <!-- HOW IT WORKS SECTION -->
+
         <section class="how-it-works" id="how-it-works">
 
             <div class="container">
@@ -543,9 +623,11 @@ function serviceIcon($name)
                         HOW IT WORKS
                     </span>
 
+
                     <h2>
                         Book Your Service in 4 Simple Steps
                     </h2>
+
 
                     <p>
                         The MSBMS system makes scheduling
@@ -565,9 +647,11 @@ function serviceIcon($name)
                             01
                         </div>
 
+
                         <h3>
                             Select a Service
                         </h3>
+
 
                         <p>
                             Choose the service your vehicle requires.
@@ -583,9 +667,11 @@ function serviceIcon($name)
                             02
                         </div>
 
+
                         <h3>
                             Choose Date &amp; Time
                         </h3>
+
 
                         <p>
                             Select an available appointment time.
@@ -601,9 +687,11 @@ function serviceIcon($name)
                             03
                         </div>
 
+
                         <h3>
                             Add Your Vehicle
                         </h3>
+
 
                         <p>
                             Provide your vehicle and contact details.
@@ -619,9 +707,11 @@ function serviceIcon($name)
                             04
                         </div>
 
+
                         <h3>
                             Confirm Booking
                         </h3>
+
 
                         <p>
                             Review your details and confirm your appointment.
@@ -629,11 +719,16 @@ function serviceIcon($name)
 
                     </div>
 
+
                 </div>
 
             </div>
 
         </section>
+
+
+
+        <!-- ABOUT SECTION -->
 
         <section class="about" id="about">
 
@@ -650,9 +745,11 @@ function serviceIcon($name)
                         ABOUT MSBMS
                     </span>
 
+
                     <h2>
                         A Smarter Way to Manage Vehicle Services
                     </h2>
+
 
                     <p>
                         MSBMS provides a digital platform for
@@ -660,6 +757,7 @@ function serviceIcon($name)
                         service bookings, service information and
                         vehicle history.
                     </p>
+
 
                     <p>
                         Instead of relying on phone calls, walk-ins
@@ -669,44 +767,76 @@ function serviceIcon($name)
                     </p>
 
 
+
                     <div class="about-list">
 
+
                         <div>
-                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+
+                            <span>
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
+                            </span>
+
                             Online appointment scheduling
+
                         </div>
 
+
                         <div>
-                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+
+                            <span>
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
+                            </span>
+
                             Digital vehicle service history
+
                         </div>
 
+
                         <div>
-                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+
+                            <span>
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
+                            </span>
+
                             Service status updates
+
                         </div>
 
+
                         <div>
-                            <span><i class="fa-solid fa-check" aria-hidden="true"></i></span>
+
+                            <span>
+                                <i class="fa-solid fa-check" aria-hidden="true"></i>
+                            </span>
+
                             Booking notifications
+
                         </div>
+
 
                     </div>
 
 
+
                     <?php if ($isLoggedIn): ?>
 
-                        <a href="<?php echo htmlspecialchars($dashboardLink); ?>"
-                           class="btn btn-primary">
+                        <a
+                            href="<?php echo htmlspecialchars($dashboardLink); ?>"
+                            class="btn btn-primary"
+                        >
 
                             Go to My Dashboard
 
                         </a>
 
+
                     <?php else: ?>
 
-                        <a href="<?php echo $base; ?>/register.php"
-                           class="btn btn-primary">
+                        <a
+                            href="<?php echo $base; ?>/register.php"
+                            class="btn btn-primary"
+                        >
 
                             Create an Account
 
@@ -714,21 +844,28 @@ function serviceIcon($name)
 
                     <?php endif; ?>
 
+
                 </div>
 
             </div>
 
         </section>
 
+
+
+        <!-- CALL TO ACTION SECTION -->
+
         <section class="cta">
 
             <div class="container cta-container">
+
 
                 <div>
 
                     <h2>
                         Ready to Book Your Vehicle Service?
                     </h2>
+
 
                     <p>
                         Schedule your appointment online and
@@ -738,18 +875,27 @@ function serviceIcon($name)
                 </div>
 
 
-                <a href="<?php echo htmlspecialchars($bookLink); ?>"
-                   class="btn btn-white">
+
+                <a
+                    href="<?php echo htmlspecialchars($bookLink); ?>"
+                    class="btn btn-white"
+                >
 
                     Book a Service →
 
                 </a>
 
+
             </div>
 
         </section>
 
+
     </main>
+
+
+
+    <!-- FOOTER -->
 
     <footer class="footer" id="contact">
 
@@ -759,8 +905,13 @@ function serviceIcon($name)
             <div class="footer-column">
 
                 <a href="#home" class="footer-logo">
-                    <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i> MSBMS
+
+                    <i class="fa-solid fa-screwdriver-wrench" aria-hidden="true"></i>
+
+                    MSBMS
+
                 </a>
+
 
                 <p>
                     Mechanic Service Booking &amp;
@@ -777,17 +928,21 @@ function serviceIcon($name)
                     Quick Links
                 </h3>
 
+
                 <a href="#home">
                     Home
                 </a>
+
 
                 <a href="#services">
                     Services
                 </a>
 
+
                 <a href="#how-it-works">
                     How It Works
                 </a>
+
 
                 <a href="#about">
                     About Us
@@ -803,11 +958,13 @@ function serviceIcon($name)
                     Account
                 </h3>
 
+
                 <?php if ($isLoggedIn): ?>
 
                     <a href="<?php echo htmlspecialchars($dashboardLink); ?>">
                         My Dashboard
                     </a>
+
 
                     <?php if ($role === "customer"): ?>
 
@@ -817,9 +974,11 @@ function serviceIcon($name)
 
                     <?php endif; ?>
 
+
                     <a href="<?php echo $base; ?>/logout.php">
                         Logout
                     </a>
+
 
                 <?php else: ?>
 
@@ -827,9 +986,11 @@ function serviceIcon($name)
                         Login
                     </a>
 
+
                     <a href="<?php echo $base; ?>/register.php">
                         Register
                     </a>
+
 
                     <a href="<?php echo $base; ?>/login.php">
                         Book a Service
@@ -847,19 +1008,26 @@ function serviceIcon($name)
                     Contact
                 </h3>
 
-                <p>
-                    <i class="fa-solid fa-envelope" aria-hidden="true"></i> support@msbms.com
-                </p>
 
                 <p>
-                    <i class="fa-solid fa-phone" aria-hidden="true"></i> 012 345 6789
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i>
+                    support@msbms.com
                 </p>
 
+
                 <p>
-                    <i class="fa-solid fa-location-dot" aria-hidden="true"></i> South Africa
+                    <i class="fa-solid fa-phone" aria-hidden="true"></i>
+                    012 345 6789
+                </p>
+
+
+                <p>
+                    <i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+                    South Africa
                 </p>
 
             </div>
+
 
         </div>
 
@@ -879,6 +1047,10 @@ function serviceIcon($name)
 
     </footer>
 
+
+
+    <!-- MOBILE MENU SCRIPT -->
+
     <script>
 
         document
@@ -896,4 +1068,5 @@ function serviceIcon($name)
 
 
 </body>
+
 </html>

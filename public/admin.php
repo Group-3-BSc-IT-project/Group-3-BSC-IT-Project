@@ -7,6 +7,10 @@ Auth::requireRole('admin');
 $stats    = $adminController->stats();
 $bookings = $bookingController->adminDashboardBookings();
 
+usort($bookings, function ($a, $b) {
+    return (int)$b['booking_id'] - (int)$a['booking_id'];
+});
+
 // Map booking status to a badge style class defined in style.css
 function statusBadgeClass($status) {
     switch ($status) {

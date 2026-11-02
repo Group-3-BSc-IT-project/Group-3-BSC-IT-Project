@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../Services/Mailer.php';
 require_once __DIR__ . '/../Services/PasswordPolicy.php';
 
+
 class PasswordResetController
 {
     private const INVITE_TTL_MINUTES = 2880; // 48 hours
