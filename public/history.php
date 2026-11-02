@@ -66,7 +66,7 @@ function repairStatusBadgeClass($status) {
     }
 }
 
-$colCount = $isAdmin ? 9 : ($isMechanic ? 7 : 6);
+$colCount = $isAdmin ? 9 : 6;
 ?>
 <!doctype html>
 <html lang="en">
@@ -149,7 +149,6 @@ $colCount = $isAdmin ? 9 : ($isMechanic ? 7 : 6);
                             <th>Status</th>
                             <th>Cost</th>
                             <th>Repair Date</th>
-                            <th>Action</th>
                         </tr>
                     <?php else: ?>
                         <tr>
@@ -197,12 +196,6 @@ $colCount = $isAdmin ? 9 : ($isMechanic ? 7 : 6);
                                 <td><span class="<?= repairStatusBadgeClass($r['status']) ?>"><?= e($r['status']) ?></span></td>
                                 <td><?= $cost ?></td>
                                 <td><?= e($date) ?></td>
-                                <td>
-                                    <div class="actions">
-                                        <a class="small-btn" href="repair_edit.php?repair_id=<?= e($r['repair_id']) ?>" title="Edit"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i></a>
-                                        <a class="small-btn" href="repair_copy.php?repair_id=<?= e($r['repair_id']) ?>" title="Copy"><i class="fa-solid fa-copy" aria-hidden="true"></i></a>
-                                    </div>
-                                </td>
                             </tr>
                         <?php else: ?>
                             <tr>
