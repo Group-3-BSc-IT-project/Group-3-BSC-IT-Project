@@ -5,7 +5,7 @@ require_once __DIR__ . '/../app/Controllers/PasswordResetController.php';
 
 Auth::requireRole('admin');
 
-$inviteController = new PasswordResetController(new PasswordResetRepository(), false);
+$inviteController = new PasswordResetController(new PasswordResetRepository($db), false);
 
 $message = '';
 $ok = false;

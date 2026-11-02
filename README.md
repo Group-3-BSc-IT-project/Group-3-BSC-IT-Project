@@ -68,6 +68,29 @@ MSBMS_OOP/
 - A Gmail account with an app password, or another SMTP service, for sending email
 - [Git](https://git-scm.com/download/win) (only if you are cloning the project)
 
+## Deploying on Render
+
+Create a **Web Service** using the Docker runtime, leave **Root Directory** blank, and use the repository root as the build context. Render will build the root `Dockerfile`; Apache serves the `public/` directory.
+
+Add these environment variables to the service:
+
+| Variable | Value |
+|---|---|
+| `APP_ENV` | `production` |
+| `DB_HOST` | Hostname of your MySQL-compatible database |
+| `DB_PORT` | Database port (usually `3306`) |
+| `DB_NAME` | Database name |
+| `DB_USER` | Database username |
+| `DB_PASS` | Database password |
+| `SMTP_HOST` | SMTP server, for Gmail `smtp.gmail.com` |
+| `SMTP_PORT` | SMTP port, usually `587` |
+| `SMTP_USERNAME` | SMTP account username |
+| `SMTP_PASSWORD` | SMTP app password or provider credential |
+| `SMTP_FROM` | Verified sender email address |
+| `SMTP_FROM_NAME` | Sender display name, for example `MSBMS` |
+
+Provide a separate MySQL-compatible database; the web container itself does not include MySQL. For a new empty database, import `database/schema.sql` once. That schema drops and recreates tables, so do not import it again into a database containing data. Keep credentials in Render environment variables, not in the repository.
+
 ## Installation
 
 ### 1. Get the project

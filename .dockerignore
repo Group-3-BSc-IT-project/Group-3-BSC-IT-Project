@@ -1,0 +1,8 @@
+.git
+.venv
+vendor
+.env
+app/config/mail.php
+config/mail.php
+*.log
+test_smtp.php

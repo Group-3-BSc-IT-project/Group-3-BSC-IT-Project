@@ -3,7 +3,7 @@ require_once __DIR__ . '/_init.php';
 require_once __DIR__ . '/../app/Repositories/PasswordResetRepository.php';
 require_once __DIR__ . '/../app/Controllers/PasswordResetController.php';
 
-$resetController = new PasswordResetController(new PasswordResetRepository(), false);
+$resetController = new PasswordResetController(new PasswordResetRepository($db), false);
 $message = '';
 $devLink = null;
 

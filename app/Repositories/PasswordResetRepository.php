@@ -4,17 +4,9 @@ class PasswordResetRepository
 {
     private PDO $pdo;
 
-    public function __construct()
+    public function __construct(PDO $pdo)
     {
-        $this->pdo = new PDO(
-            'mysql:host=localhost;dbname=msbms;charset=utf8mb4',
-            'root',
-            '',
-            [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]
-        );
+        $this->pdo = $pdo;
     }
 
     public function findUserByEmail(string $email): ?array

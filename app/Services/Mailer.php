@@ -10,24 +10,33 @@ class Mailer
     public static function send(string $to, string $subject, string $body): bool
     {
         $configFile = __DIR__ . '/../config/mail.php';
-        if (!is_file($configFile)) {
-            error_log('Mail error: app/config/mail.php is missing. Copy mail.example.php and fill it in.');
+        $config = is_file($configFile) ? require $configFile : [];
+
+        $username = getenv('SMTP_USERNAME') ?: ($config['username'] ?? '');
+        $password = getenv('SMTP_PASSWORD') ?: ($config['password'] ?? '');
+        $from = getenv('SMTP_FROM') ?: ($config['from'] ?? $username);
+        $fromName = getenv('SMTP_FROM_NAME') ?: ($config['from_name'] ?? 'MSBMS');
+
+        if ($username === '' || $password === '' || $from === '') {
+            error_log('Mail error: configure SMTP_USERNAME, SMTP_PASSWORD, and SMTP_FROM.');
             return false;
         }
-        $cfg = require $configFile;
+
+        $host = getenv('SMTP_HOST') ?: ($config['host'] ?? 'smtp.gmail.com');
+        $port = (int)(getenv('SMTP_PORT') ?: ($config['port'] ?? 587));
 
         $mail = new PHPMailer(true);
 
         try {
             $mail->isSMTP();
-            $mail->Host       = 'smtp.gmail.com';
+            $mail->Host       = $host;
             $mail->SMTPAuth   = true;
-            $mail->Username   = $cfg['username'];
-            $mail->Password   = $cfg['password'];
+            $mail->Username   = $username;
+            $mail->Password   = $password;
             $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-            $mail->Port       = 587;
+            $mail->Port       = $port;
 
-            $mail->setFrom($cfg['from'], $cfg['from_name']);
+            $mail->setFrom($from, $fromName);
             $mail->addAddress($to);
 
             $mail->Subject = $subject;
