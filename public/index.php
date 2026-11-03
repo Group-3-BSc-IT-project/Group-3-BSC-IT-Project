@@ -1011,13 +1011,13 @@ $cssVersion = file_exists($cssFile) ? filemtime($cssFile) : time();
 
                 <p>
                     <i class="fa-solid fa-envelope" aria-hidden="true"></i>
-                    support@msbms.com
+                    Jordanpramraj4@gmail.com
                 </p>
 
 
                 <p>
                     <i class="fa-solid fa-phone" aria-hidden="true"></i>
-                    012 345 6789
+                    0793730339
                 </p>
 
 

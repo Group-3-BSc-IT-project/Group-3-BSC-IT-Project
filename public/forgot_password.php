@@ -118,8 +118,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="footer-column">
                 <h3>Contact</h3>
-                <p>📧 support@msbms.com</p>
-                <p>📞 012 345 6789</p>
+                <p>📧 Jordanpramraj4@gmail.com</p>
+                <p>📞 0793730339</p>
                 <p>📍 South Africa</p>
             </div>
 

@@ -241,11 +241,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </h3>
 
                 <p>
-                    <i class="fa-solid fa-envelope" aria-hidden="true"></i> support@msbms.com
+                    <i class="fa-solid fa-envelope" aria-hidden="true"></i> Jordanpramraj4@gmail.com
                 </p>
 
                 <p>
-                    <i class="fa-solid fa-phone" aria-hidden="true"></i> 012 345 6789
+                    <i class="fa-solid fa-phone" aria-hidden="true"></i> 0793730339
                 </p>
 
                 <p>

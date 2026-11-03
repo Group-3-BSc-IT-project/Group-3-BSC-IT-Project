@@ -28,8 +28,7 @@ class Mailer
         $mail = new PHPMailer(true);
 
         try {
-            $mail->SMTPDebug = 2; // Enables verbose debug output
-            $mail->Debugoutput = function($str, $level) {echo "debug: $str\n";};
+            $mail->SMTPDebug = 0;
             $mail->isSMTP();
             $mail->Host       = $host;
             $mail->SMTPAuth   = true;
